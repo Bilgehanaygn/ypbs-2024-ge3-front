@@ -16,7 +16,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 export const MuiNavBar = () => {
   return (
     <AppBar
-      position="static"
+      position="fixed"
       style={{
         height: "65px",
         backgroundColor: "red",

@@ -1,1 +1,1 @@
-export const styledLink = { color: "inherit" , textDecoration: "inherit"};
+export const styledLink = { color: "inherit", textDecoration: "inherit" };

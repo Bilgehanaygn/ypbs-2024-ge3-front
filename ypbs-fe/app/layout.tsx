@@ -18,6 +18,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider theme={theme}>
           <MuiNavBar />
+          <div style={{ marginTop: 0, height: 65 }}></div>
           <div style={{ backgroundColor: "white", height: 500 }}>
             {children}
           </div>

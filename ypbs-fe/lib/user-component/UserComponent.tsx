@@ -1,4 +1,4 @@
-import { Stack, Avatar } from "@mui/material";
+import { Stack, Avatar, Typography } from "@mui/material";
 
 export const UserComponent = ({
   name,
@@ -13,7 +13,9 @@ export const UserComponent = ({
     <Stack spacing={4}>
       <Stack direction="row" alignItems="center" spacing={2}>
         <Avatar>{firstLetterOfName + firstLetterOfSurname}</Avatar>
-        <div>{name + " " + surname}</div>
+        <Typography color="Black" variant="caption">
+          {name + " " + surname}
+        </Typography>
       </Stack>
     </Stack>
   );

@@ -12,23 +12,20 @@ import {
 } from "@mui/material";
 import { UserComponent } from "../user-component/UserComponent";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { LogoGoster } from "../logo-component/logo";
 
 export const MuiNavBar = () => {
-
-  
   return (
     <AppBar
       position="fixed"
       style={{
         height: "65px",
-        backgroundColor: "red",
+        backgroundColor: "white",
       }}
     >
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
         <Stack direction="row" alignItems="center" spacing={2}>
-          <div>
-            <Typography color="inherit">Logo</Typography>
-          </div>
+          <LogoGoster></LogoGoster>
           <Divider
             orientation="vertical"
             flexItem
@@ -48,13 +45,13 @@ export const MuiNavBar = () => {
           }}
         >
           <Button color="inherit" sx={{ fontSize: "0.75rem" }}>
-            Genel
+            <Typography variant="caption">Genel</Typography>
           </Button>
           <Button color="inherit" sx={{ fontSize: "0.75rem" }}>
-            Rehber
+            <Typography variant="caption">Rehber</Typography>
           </Button>
           <Button color="inherit" sx={{ fontSize: "0.75rem" }}>
-            Organizasyon Şeması
+            <Typography variant="caption">Organizasyon Şeması</Typography>
           </Button>
           <Divider
             orientation="vertical"

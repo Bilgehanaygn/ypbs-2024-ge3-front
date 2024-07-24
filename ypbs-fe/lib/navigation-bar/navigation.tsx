@@ -14,6 +14,8 @@ import { UserComponent } from "../user-component/UserComponent";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 export const MuiNavBar = () => {
+
+  
   return (
     <AppBar
       position="fixed"

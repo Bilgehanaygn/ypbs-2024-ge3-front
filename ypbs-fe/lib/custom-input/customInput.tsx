@@ -6,26 +6,46 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useState } from "react";
-import useSWR from "swr";
-import { CUSTOM_INPUT } from "../../app/api_helper/URLs";
-import { getFetcher } from "../../app/api_helper/fetchers";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-interface BasicSelectProps {
+interface CustomInputProps {
   endpoint: string;
 }
 
-const BasicSelect: React.FC<BasicSelectProps> = ({ endpoint }) => {
+const CustomInput: React.FC<CustomInputProps> = ({ endpoint }) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
-  const { data, error } = useSWR(CUSTOM_INPUT(), getFetcher);
-  console.log(data);
+  const [data, setData] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<string[]>(
+          `http://localhost:8080/api/dummy/dummy`
+        );
+        setData(response.data);
+      } catch (error) {
+        setError("Error fetching data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setSelectedValue(event.target.value as string);
   };
 
+  if (loading) {
+    return <MenuItem value="">Loading...</MenuItem>;
+  }
+
   if (error) {
-    return <div>Error loading data</div>;
+    return <MenuItem value="">Error loading data</MenuItem>;
   }
 
   return (
@@ -33,19 +53,15 @@ const BasicSelect: React.FC<BasicSelectProps> = ({ endpoint }) => {
       <FormControl fullWidth>
         <InputLabel></InputLabel>
         <Select value={selectedValue} label="Select" onChange={handleChange}>
-          {data ? (
-            data.map((item: string) => (
-              <MenuItem key={item} value={item}>
-                {item}
-              </MenuItem>
-            ))
-          ) : (
-            <MenuItem value="">Loading...</MenuItem>
-          )}
+          {data.map((item) => (
+            <MenuItem key={item} value={item}>
+              {item}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>
   );
 };
 
-export default BasicSelect;
+export default CustomInput;

@@ -1,15 +1,8 @@
-export default function main (){
-
-    return(
-        <>
-            <div style={{display : "flex",
-                flexDirection: "column"
-            }}>
-                <input placeholder="Username"></input>
-                <input placeholder="Password"></input>
-                <button>Enter</button>
-            </div>
-            
-        </>
-    )
+import Image from "next/image";
+import './styles.css';
+import { LoginPage } from "@/lib/login-page/LoginPage";
+export default function Home() {
+    return (
+        <LoginPage></LoginPage>
+      );
 }

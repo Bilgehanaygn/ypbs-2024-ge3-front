@@ -1,39 +1,91 @@
 'use client';
 
 import { useState } from 'react';
-import { Container, TextField, Button, Box, Typography, Grid } from '@mui/material';
+import { Container, TextField, Button, Box, Typography, Grid, FormControlLabel, Checkbox, Link, InputAdornment, IconButton, Card } from '@mui/material';
+import { postFetcher } from '@/app/api_helper/fetchers';
+import { LOGIN_PATH } from '@/app/api_helper/URLs';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import Image from 'next/image';
+import yte_logo from "./../../public/images/yte-logoyatay.jpg"
+import BackgroundImage from './BackgroundImage';
 
-export function LoginPage()  {
-
+export function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [error, setError] = useState({ username: false, password: false });
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false); // Handle later
+  const [loginError, setLoginError] = useState('');
 
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
+  const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    // Example validation
-    if (username.trim() === '' || password.trim() === '') {
-      setError(true);
+    const usernameError = username.trim() === '';
+    const passwordError = password.trim() === '';
+
+    if (usernameError || passwordError) {
+      setError({ username: usernameError, password: passwordError });
     } else {
-      setError(false);
-      // Handle login logic here
-      console.log('Username:', username);
-      console.log('Password:', password);
+      setError({ username: false, password: false });
+      setLoginError('');
+
+      try {
+
+        const loginRequest = {
+          username: username.trim(),
+          password: password.trim()
+        }
+        const data = await postFetcher(LOGIN_PATH, loginRequest);
+        console.log('Giriş:', data);
+
+      } catch (error) {
+        console.error('Hata:', error);
+        setLoginError('Giriş başarısız.');
+      }
     }
   };
- return (
-    <Container maxWidth="sm">
-      <Box 
-        sx={{ 
-          marginTop: 8, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center' 
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  return (
+    <Container
+      maxWidth="sm"
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <BackgroundImage />
+      <Card
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          bgcolor: 'background.paper',
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 3,
+          width: '100%',
+          maxWidth: 400,
         }}
       >
-        <Typography component="h1" variant="h5">
-          Login
+
+        { /* Serdar'dan gelen Logo Componentı koyulacak */}
+        <Image
+          src={yte_logo}
+          alt="Logo"
+          width={400}
+          height={200}
+          quality={100}
+          draggable="false"
+        />
+
+        <Typography color="black" component="h1" variant="h5">
+          Personel Bilgi Sistemi
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
@@ -41,39 +93,78 @@ export function LoginPage()  {
             required
             fullWidth
             id="username"
-            label="Username"
+            label="Kullanıcı Adı"
             name="username"
             autoComplete="username"
             autoFocus
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            error={error && username.trim() === ''}
-            helperText={error && username.trim() === '' ? 'Username is required' : ''}
+            error={error.username}
+            helperText={error.username ? 'Username is required' : ''}
           />
           <TextField
             margin="normal"
             required
             fullWidth
             name="password"
-            label="Password"
-            type="password"
+            label="Şifre"
+            type={showPassword ? 'text' : 'password'}
             id="password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            error={error && password.trim() === ''}
-            helperText={error && password.trim() === '' ? 'Password is required' : ''}
+            error={error.password}
+            helperText={error.password ? 'Password is required' : ''}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  color="primary"
+                />
+              }
+              label={<Typography >Beni Hatırla</Typography>}
+            />
+            <Link href="/sifremi-unuttum" variant="body2" sx={{ color: 'black' }}>
+              Şifremi Unuttum
+            </Link>
+          </Box>
+          {loginError && (
+            <Typography color="error" variant="body2">
+              {loginError}
+            </Typography>
+          )}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            GİRİŞ
           </Button>
         </Box>
-      </Box>
+      </Card>
     </Container>
   );
 }

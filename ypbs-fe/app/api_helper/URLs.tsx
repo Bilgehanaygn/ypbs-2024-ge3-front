@@ -1,4 +1,4 @@
 // Update this
-export const COMMON_PATH = "localhost:8080/";
+export const COMMON_PATH = "http://localhost:8080";
 
-export const LOGIN_PATH = () => "login";
+export const LOGIN_PATH = "api/auth/login";

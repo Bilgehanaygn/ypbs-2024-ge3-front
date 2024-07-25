@@ -2,7 +2,7 @@ import axios from 'axios';
 import { COMMON_PATH } from './URLs';
 
 const axiosInstance = axios.create({
-    baseURL: COMMON_PATH, 
+    baseURL: "", 
     headers: {
       'Content-Type': 'application/json',
     },

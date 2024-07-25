@@ -28,10 +28,11 @@ export function createComponents(config: TubitakPalette): Components {
         root: {
           borderRadius: "5px",
           textTransform: "none",
-          color: "black",
+          color: "white",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
+          backgroundColor: "red"
         },
         sizeSmall: {
           padding: "6px 16px",

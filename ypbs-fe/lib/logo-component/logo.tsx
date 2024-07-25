@@ -1,6 +1,6 @@
 import React from "react";
 
-export function LogoGoster() {
+export function Logo() {
   return (
     <div>
       <svg

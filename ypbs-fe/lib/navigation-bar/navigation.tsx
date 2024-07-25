@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { UserComponent } from "../user-component/UserComponent";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { LogoGoster } from "../logo-component/logo";
+import { Logo } from "../logo-component/logo";
 
 export const MuiNavBar = () => {
   return (
@@ -25,7 +25,7 @@ export const MuiNavBar = () => {
     >
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
         <Stack direction="row" alignItems="center" spacing={2}>
-          <LogoGoster></LogoGoster>
+          <Logo></Logo>
           <Divider
             orientation="vertical"
             flexItem

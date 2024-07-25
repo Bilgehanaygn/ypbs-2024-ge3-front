@@ -22,9 +22,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ endpoint }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<string[]>(
-          `http://localhost:8080/api/dummy/dummy`
-        );
+        const response = await axios.get<string[]>(`api/dummy/dummy`);
         setData(response.data);
       } catch (error) {
         setError("Error fetching data");

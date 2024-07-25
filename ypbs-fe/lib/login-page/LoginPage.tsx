@@ -35,8 +35,9 @@ export function LoginPage() {
           username: username.trim(),
           password: password.trim()
         }
-        const data = await postFetcher(LOGIN_PATH, loginRequest);
-        console.log('Giriş:', data);
+        const response = await postFetcher(LOGIN_PATH, loginRequest);
+        console.log('Giriş:', response);
+        localStorage.setItem("secret", response)
 
       } catch (error) {
         console.error('Hata:', error);

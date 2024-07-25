@@ -1,8 +1,17 @@
 import { Box, Card, Typography } from "@mui/material";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
-export function BornTodayCard({ name, surname, birthdate, image }) {
+export function BornTodayCard({
+  name,
+  surname,
+  birthdate,
+  image,
+}: {
+  name: string;
+  surname: string;
+  birthdate: string;
+  image?: string;
+}) {
   const cardStyle = {
     marginBottom: "16px",
     maxWidth: "300px",
@@ -24,7 +33,7 @@ export function BornTodayCard({ name, surname, birthdate, image }) {
   };
 
   const imageStyle = {
-    objectFit: "cover",
+    objectFit: "cover" as "cover",
   };
 
   const textStyle = {
@@ -38,9 +47,9 @@ export function BornTodayCard({ name, surname, birthdate, image }) {
   };
 
   return (
-    <Card style={cardStyle}>
+    <Card sx={cardStyle}>
       <Typography variant="h5"> BUGÜN DOĞANLAR</Typography>
-      <Box style={imageContainerStyle}>
+      <Box sx={imageContainerStyle}>
         {image ? (
           <Image
             src={`data:image/png;base64, ${image}`}

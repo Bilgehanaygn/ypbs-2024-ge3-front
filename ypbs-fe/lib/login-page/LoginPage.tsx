@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Card, Box } from "@mui/material";
-import BasicSelect from "../custom-input/customInput";
+import BasicSelect from "../custom-input/CustomInput";
 
 const LoginPage: React.FC = () => {
   const unitsEndpoint = "/api/dummy/units";

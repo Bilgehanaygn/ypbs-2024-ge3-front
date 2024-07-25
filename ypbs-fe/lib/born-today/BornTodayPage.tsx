@@ -14,7 +14,7 @@ interface User {
   image?: string;
 }
 
-export default function Page() {
+export default function BornTodayPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

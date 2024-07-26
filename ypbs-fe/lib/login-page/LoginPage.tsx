@@ -76,4 +76,6 @@ export function LoginPage()  {
       </Box>
     </Container>
   );
-}
+};
+
+export default LoginPage;

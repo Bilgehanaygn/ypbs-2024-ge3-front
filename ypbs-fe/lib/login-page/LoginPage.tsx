@@ -168,4 +168,6 @@ export function LoginPage() {
       </Card>
     </Container>
   );
-}
+};
+
+export default LoginPage;

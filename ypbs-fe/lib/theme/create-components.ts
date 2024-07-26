@@ -14,7 +14,7 @@ export function createComponents(config: TubitakPalette): Components {
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 20,
+          borderRadius: 15,
           padding: 10,
           [`&.${paperClasses.elevation1}`]: {
             boxShadow:

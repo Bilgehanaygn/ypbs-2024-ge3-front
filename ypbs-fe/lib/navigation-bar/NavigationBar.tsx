@@ -58,7 +58,7 @@ export const NavigationBar = () => {
             flexItem
             style={{ backgroundColor: "gray" }}
           />
-          <UserComponent name="Serdar" surname="Cetin" />
+          <UserComponent name="Serkan" surname="Yılmaz" />
           <Divider
             orientation="vertical"
             flexItem

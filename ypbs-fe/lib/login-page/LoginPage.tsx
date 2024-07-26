@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 import { Container, TextField, Button, Box, Typography, Grid, FormControlLabel, Checkbox, Link, InputAdornment, IconButton, Card } from '@mui/material';
-import { postFetcher } from '@/app/api_helper/fetchers';
-import { LOGIN_PATH } from '@/app/api_helper/URLs';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Image from 'next/image';
 import yte_logo from "./../../public/images/yte-logoyatay.jpg"
 import BackgroundImage from './BackgroundImage';
+import axios from 'axios';
 
 export function LoginPage() {
   const [username, setUsername] = useState('');
@@ -35,9 +34,10 @@ export function LoginPage() {
           username: username.trim(),
           password: password.trim()
         }
-        const response = await postFetcher(LOGIN_PATH, loginRequest);
-        console.log('Giriş:', response);
-        localStorage.setItem("secret", response)
+        
+        const response = await axios.post("api/auth/login", loginRequest);
+        console.log('Giriş:', response.data);
+        localStorage.setItem("secret", response.data)
 
       } catch (error) {
         console.error('Hata:', error);

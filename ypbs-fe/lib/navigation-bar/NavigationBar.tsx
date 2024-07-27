@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { UserComponent } from "../user-component/UserComponent";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { Logo } from "../logo-component/Logo";
+import { Logo } from "../logo-component/logo";
 
 export const NavigationBar = () => {
   return (

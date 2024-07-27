@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { createTheme } from "@/lib/theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
-import { MuiNavBar } from "../lib/navigation-bar/navigation";
+import { NavigationBar } from "../lib/navigation-bar/NavigationBar";
 import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider theme={theme}>
-          {!isLoginPage && <MuiNavBar />}
+          {!isLoginPage && <NavigationBar />}
           {!isLoginPage && <div style={{ marginTop: 0, height: 65 }}></div>}
           <div style={{ height: 500 }}>
             {children}

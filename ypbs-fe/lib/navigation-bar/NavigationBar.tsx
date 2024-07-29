@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import { useRouter } from 'next/navigation'; 
 
 import {
@@ -16,16 +16,21 @@ import { UserComponent } from "../user-component/UserComponent";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Logo } from "../logo-component/logo";
 import axios from "axios";
+import { UserContext } from "../context/UserContext";
 
 export const NavigationBar = () => {
   const router = useRouter();
+  const [userState,setUserState] = useContext(UserContext);
 
   async function handleLogout(){
     try {
+    
       const response = await axios.get("api/auth/logout");
-      console.log(response.data);
+      console.log(response.data);   
+      
+      setUserState(null);
       router.push('/login');
-
+      
 
     } catch (error) {
       console.error('Hata:', error);

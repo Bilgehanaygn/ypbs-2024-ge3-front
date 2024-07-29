@@ -6,8 +6,10 @@ import { ThemeProvider } from "@mui/material/styles";
 import { NavigationBar } from "../lib/navigation-bar/NavigationBar";
 import { useEffect, useState } from "react";
 import { usePathname } from 'next/navigation';
+import { UserContext, userInterface } from "@/lib/context/UserContext";
 
 const inter = Inter({ subsets: ["latin"] });
+
 
 export default function RootLayout({
   children,
@@ -17,19 +19,23 @@ export default function RootLayout({
   const theme = createTheme();
   const pathName = usePathname();
   const isLoginPage = pathName === "/login";
+  const [userState, setUserState] = useState<userInterface | null>(null);
   
-
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider theme={theme}>
-          {!isLoginPage && <NavigationBar />}
-          {!isLoginPage && <div style={{ marginTop: 0, height: 65 }}></div>}
-          <div style={{ height: 500 }}>
-            {children}
-          </div>
-        </ThemeProvider>
-      </body>
-    </html>
+    <UserContext.Provider value ={[userState, setUserState]}>
+      <html lang="en">
+        <body className={inter.className}>
+          
+            <ThemeProvider theme={theme}>
+              {!isLoginPage && <NavigationBar />}
+              {!isLoginPage && <div style={{ marginTop: 0, height: 65 }}></div>}
+              <div style={{ height: 500 }}>
+                {children}
+              </div>
+            </ThemeProvider>
+          
+        </body>
+      </html>
+    </UserContext.Provider>
   );
 }

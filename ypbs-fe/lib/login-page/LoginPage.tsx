@@ -7,6 +7,7 @@ import Image from 'next/image';
 import yte_logo from "./../../public/images/yte-logoyatay.jpg"
 import BackgroundImage from './BackgroundImage';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 export function LoginPage() {
   const [username, setUsername] = useState('');
@@ -15,6 +16,7 @@ export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false); // Handle later
   const [loginError, setLoginError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -37,7 +39,9 @@ export function LoginPage() {
         
         const response = await axios.post("api/auth/login", loginRequest);
         console.log('Giriş:', response.data);
-        localStorage.setItem("secret", response.data)
+        if (response.status===200){
+          router.push("/");
+        }
 
       } catch (error) {
         console.error('Hata:', error);

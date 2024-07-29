@@ -5,6 +5,7 @@ import { createTheme } from "@/lib/theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { NavigationBar } from "../lib/navigation-bar/NavigationBar";
 import { useEffect, useState } from "react";
+import { usePathname } from 'next/navigation';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,13 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const theme = createTheme();
-  const [isLoginPage, setIsLoginPage] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsLoginPage(window.location.pathname === "/login");
-    }
-  }, []);
+  const pathName = usePathname();
+  const isLoginPage = pathName === "/login";
+  
 
   return (
     <html lang="en">

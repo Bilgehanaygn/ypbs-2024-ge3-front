@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { useRouter } from 'next/navigation'; 
+
 import {
   AppBar,
   Toolbar,
@@ -13,8 +15,27 @@ import {
 import { UserComponent } from "../user-component/UserComponent";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Logo } from "../logo-component/logo";
+import axios from "axios";
 
 export const NavigationBar = () => {
+  const router = useRouter();
+
+  async function handleLogout(){
+    try {
+      const response = await axios.get("api/auth/logout");
+      console.log(response.data);
+      router.push('/login');
+
+
+    } catch (error) {
+      console.error('Hata:', error);
+    }
+  }
+
+
+
+
+
   return (
     <AppBar
       position="fixed"
@@ -64,7 +85,7 @@ export const NavigationBar = () => {
             flexItem
             style={{ backgroundColor: "gray" }}
           />
-          <IconButton>
+          <IconButton onClick={handleLogout}>
             <ExitToAppIcon style={{ color: "black" }}></ExitToAppIcon>
           </IconButton>
         </Stack>

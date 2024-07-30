@@ -18,7 +18,6 @@ export default function RootLayout({
 }) {
   const theme = createTheme();
   const pathName = usePathname();
-  const isLoginPage = pathName === "/login";
 
   const [userState, setUserState] = useState<userInterface | null>(null);
   const router = useRouter();
@@ -36,8 +35,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <UserContext.Provider value={[userState, setUserState]}>
           <ThemeProvider theme={theme}>
-            {!isLoginPage && <NavigationBar />}
-            {!isLoginPage && <div style={{ marginTop: 0, height: 65 }}></div>}
+            {userState && <NavigationBar />}
+            {userState && <div style={{ marginTop: 0, height: 65 }}></div>}
             <div style={{ height: 500 }}>{children}</div>
           </ThemeProvider>
         </UserContext.Provider>

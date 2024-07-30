@@ -29,8 +29,6 @@ export const NavigationBar = () => {
       console.log(response.data);   
       
       setUserState(null);
-      router.push('/login');
-      
 
     } catch (error) {
       console.error('Hata:', error);

@@ -64,13 +64,9 @@ export function LoginPage() {
     setShowPassword(!showPassword);
   };
 
-  
-  //if (userState) {console.log("here"+userState);return null;}
-  //if (userState) {return router.push("/");}
 
   return (
     <>
-    {/*userState && router.push("/")*/}
     <Container
       maxWidth="sm"
       sx={{

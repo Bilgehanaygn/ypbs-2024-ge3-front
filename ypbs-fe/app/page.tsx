@@ -1,15 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import './styles.css';
-import {useRouter} from "next/navigation";
-import {useEffect} from "react";
+import LoginPage from "@/lib/login-page/LoginPage";
+import { UserContext } from "@/lib/context/UserContext";
+import { useContext } from "react";
+import HomePage from '@/lib/home-page/HomePage';
+
 
 export default function Home() {
+    const [userState, setUserState] = useContext(UserContext);
 
     return (
-        <div className="anaSayfaDiv">
-            Ana Sayfa
-        </div>
+        <>
+        {userState && <HomePage/>}
+        {!userState && <LoginPage/>}
+        </>
     );
 }

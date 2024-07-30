@@ -21,17 +21,29 @@ export default function RootLayout({
 
   const [userState, setUserState] = useState<userInterface | null>(null);
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("/api/user/userHeader");
-      if (response.data !== null) setUserState(response.data);
+      try {
+        const response = await axios.get("/api/user/userHeader");
+        if (response.data) {
+          setUserState(response.data);
+        } else {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        router.push("/");
+      } finally {
+        setLoading(false);
+      }
     };
+  
     fetchData();
-  }, []);
-
+  }, [router]);
   return (
-    <html lang="en">
+      <html lang="en">
       <body className={inter.className}>
         <UserContext.Provider value={[userState, setUserState]}>
           <ThemeProvider theme={theme}>

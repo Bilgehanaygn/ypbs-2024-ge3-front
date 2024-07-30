@@ -22,7 +22,7 @@ export default function BornTodayPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<User[]>("api/users/born-today");
+        const response = await axios.get<User[]>("api/user/bornToday");
         setUsers(response.data);
       } catch (error) {
         setError("Error fetching data");

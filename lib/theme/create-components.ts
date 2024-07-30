@@ -18,11 +18,29 @@ export function createComponents(config: TubitakPalette): Components {
           padding: 10,
           [`&.${paperClasses.elevation1}`]: {
             boxShadow:
-              "0px 5px 22px rgba(0, 0, 0, 0.04), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.03)",
+            "0px 5px 22px rgba(0, 0, 0, 0.15), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.05)",
           },
         },
       },
     },
+
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            bgcolor: "transparent",
+            color: "blue",
+            '& .MuiSvgIcon-root': {
+              color: "#2e7d32",
+            },
+          },
+          '&:active': {
+            transform: "scale(0.95)",
+          }
+        }
+      }
+    },
+
     MuiButton: {
       styleOverrides: {
         root: {

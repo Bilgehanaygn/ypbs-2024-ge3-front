@@ -27,17 +27,12 @@ export const NavigationBar = () => {
     
       const response = await axios.get("api/auth/logout");
       console.log(response.data);   
-      
       setUserState(null);
 
     } catch (error) {
       console.error('Hata:', error);
     }
   }
-
-
-
-
 
   return (
     <AppBar

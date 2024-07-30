@@ -22,12 +22,6 @@ export function LoginPage() {
   const router = useRouter();
   const [userState, setUserState] = useContext(UserContext);
 
-  useEffect(() => {
-    if (userState) {
-      console.log(userState);
-      router.push("/");
-    }
-  }, [userState]);
 
   async function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();

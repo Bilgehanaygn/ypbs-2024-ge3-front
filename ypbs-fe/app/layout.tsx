@@ -7,6 +7,7 @@ import {NavigationBar} from "../lib/navigation-bar/NavigationBar";
 import {usePathname, useRouter} from 'next/navigation';
 import {userInterface, UserContext} from "@/lib/context/UserContext";
 import {useContext, useEffect, useState} from "react";
+import axios from "axios";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -19,18 +20,29 @@ export default function RootLayout({children,}: { children: React.ReactNode; }) 
     const [userState,setUserState] = useState<userInterface | null>(null);
     const router = useRouter();
 
-    useEffect(() => { //Bu burda olsa da olur olmasa da olur normalde sadece burda olsa yine çalışcak ama çalışmıyo
-        console.log(userState);
-        if(userState===null){
-            router.push("/login");
-        }
-    }, []);
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+              console.log(userState);
+              const response = await axios.get("api/userHeader");
+              setUserState(response.data);
+              console.log(userState);
+              if (userState === null) {
+                  router.push("/login");
+              }
+          } catch (error) {
+              console.error("Error fetching user data:", error);
+              router.push("/login");
+          }
+      };
+      fetchData();
+  }, []);
 
-
+    
     return (
         <html lang="en">
         <body className={inter.className}>
-        <UserContext.Provider value={[userState,setUserState]}> {/*UserContext de commentlediğim yerlerin commentini kaldırısan buraya sadece UserProvider yazsan aynı şey */}
+        <UserContext.Provider value={[userState,setUserState]}>
             <ThemeProvider theme={theme}>
                 {!isLoginPage && <NavigationBar/>}
                 {!isLoginPage && <div style={{marginTop: 0, height: 65}}></div>}

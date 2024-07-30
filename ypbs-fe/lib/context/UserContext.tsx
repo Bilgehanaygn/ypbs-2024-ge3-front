@@ -10,15 +10,3 @@ export interface userInterface {
 type ContextType = [userInterface | null, Dispatch<SetStateAction<userInterface | null>>];
 
 export const UserContext = createContext<ContextType>([null, () => undefined]);
-
-/*
-// export const UserProvider = ({ children }: { children: ReactNode }) => {
-//     const [userState, setUserState] = useState<userInterface | null>(null);
-//
-//     return (
-//         <UserContext.Provider value={[userState, setUserState]}>
-//             {children}
-//         </UserContext.Provider>
-//     );
-// };
-*/

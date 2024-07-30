@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import {
   Container, TextField,  Button,  Box,  Typography,  Grid, FormControlLabel, Checkbox, Link, InputAdornment, IconButton, Card,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { ContentPasteSearchOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import Image from "next/image";
 import yte_logo from "./../../public/images/yte-logoyatay.jpg";
 import BackgroundImage from "./BackgroundImage";
@@ -23,12 +23,11 @@ export function LoginPage() {
   const [userState, setUserState] = useContext(UserContext);
 
   useEffect(() => {
-    if (userState!==null) {
-      console.log(userState);
+    if (userState) {
+      //console.log(userState);
       router.push("/");
     }
   }, [userState]);
-
 
   async function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
@@ -65,11 +64,13 @@ export function LoginPage() {
     setShowPassword(!showPassword);
   };
 
-  if (userState) {
-    return null;
-  }
+  
+  if (userState) {console.log("here"+userState);return null;}
+  //if (userState) {return router.push("/");}
 
   return (
+    <>
+    {/*userState && router.push("/")*/}
     <Container
       maxWidth="sm"
       sx={{
@@ -188,6 +189,7 @@ export function LoginPage() {
         </Box>
       </Card>
     </Container>
+    </>
   );
 }
 

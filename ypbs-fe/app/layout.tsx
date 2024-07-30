@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { userInterface, UserContext } from "@/lib/context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import LoginPage from "@/lib/login-page/LoginPage";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +19,11 @@ export default function RootLayout({
 }) {
   const theme = createTheme();
   const pathName = usePathname();
+  
 
   const [userState, setUserState] = useState<userInterface | null>(null);
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loadingState, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,14 +44,26 @@ export default function RootLayout({
   
     fetchData();
   }, [router]);
-  return (
+  
+  if (loadingState) {
+    return (
+      <html lang="en">
+      <body className={inter.className}>
+      <div>Loading...</div> 
+      </body>
+    </html>
+    )
+  }//TODO:loading component koyulacak
+  
+
+  return ( 
       <html lang="en">
       <body className={inter.className}>
         <UserContext.Provider value={[userState, setUserState]}>
           <ThemeProvider theme={theme}>
             {userState && <NavigationBar />}
             {userState && <div style={{ marginTop: 0, height: 65 }}></div>}
-            <div style={{ height: 500 }}>{children}</div>
+            {((pathName==="/") || userState) && <div style={{ height: 500 }}>{ children}</div>}
           </ThemeProvider>
         </UserContext.Provider>
       </body>

@@ -24,7 +24,7 @@ export function LoginPage() {
 
   useEffect(() => {
     if (userState) {
-      //console.log(userState);
+      console.log(userState);
       router.push("/");
     }
   }, [userState]);
@@ -50,7 +50,7 @@ export function LoginPage() {
         const response = await axios.post("api/auth/login", loginRequest);
         console.log("Giriş:", response.data);
         if (response.status === 200) {
-          const response1 = await axios.get("api/userHeader");
+          const response1 = await axios.get("api/user/userHeader");
           setUserState(response1.data);
         }
       } catch (error) {
@@ -65,7 +65,7 @@ export function LoginPage() {
   };
 
   
-  if (userState) {console.log("here"+userState);return null;}
+  //if (userState) {console.log("here"+userState);return null;}
   //if (userState) {return router.push("/");}
 
   return (

@@ -25,7 +25,7 @@ export default function RootLayout({
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("/api/userHeader");
+      const response = await axios.get("/api/user/userHeader");
       if (response.data !== null) setUserState(response.data);
     };
     fetchData();

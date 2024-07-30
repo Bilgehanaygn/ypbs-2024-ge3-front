@@ -17,8 +17,9 @@ export default function BackgroundImage() {
           src="/images/login-background.png"
           alt="Background"
           fill
-          quality={100}
+          quality={75}
           sizes="(max-width: 600px) 100vw, 600px"
+          priority={true}
         />
     </Box>
   );

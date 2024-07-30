@@ -2,18 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import {
-  Container,
-  TextField,
-  Button,
-  Box,
-  Typography,
-  Grid,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  InputAdornment,
-  IconButton,
-  Card,
+  Container, TextField,  Button,  Box,  Typography,  Grid, FormControlLabel, Checkbox, Link, InputAdornment, IconButton, Card,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Image from "next/image";
@@ -38,10 +27,10 @@ export function LoginPage() {
       console.log(userState);
       router.push("/");
     }
-  }, [userState,router]);
+  }, [userState]);
 
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
+  async function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
 
     const usernameError = username.trim() === "";
@@ -70,13 +59,11 @@ export function LoginPage() {
         setLoginError("Giriş başarısız.");
       }
     }
-  };
+  }
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
-  console.log(userState);
 
   if (userState) {
     return null;

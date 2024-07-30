@@ -10,7 +10,7 @@ export function Logo() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g clip-path="url(#clip0_202_53196)">
+        <g clipPath="url(#clip0_202_53196)"> {/*Changed from clip-path to ClipPath because of console Errors with Spring 15.3 this is the new standard I guess*/}
           <path
             d="M11.3521 38.3525C11.9182 38.0778 12.2013 37.6199 12.2013 36.9942V36.9484C12.2013 36.4295 12.0076 36.0327 11.6054 35.758C11.2627 35.5291 10.8307 35.407 10.2795 35.407H9.38562V41.4506H10.3242C10.9052 41.4506 11.3819 41.298 11.7395 41.008C12.097 40.7028 12.2758 40.2907 12.2758 39.7718V39.6955C12.2758 39.0698 11.9629 38.6272 11.3521 38.3525ZM10.4285 36.3837C10.935 36.3837 11.1883 36.6279 11.1883 37.1468C11.1883 37.6657 10.935 37.9404 10.4136 37.9404V36.3837H10.4285ZM11.2478 39.6802C11.2478 39.9244 11.1734 40.1228 11.0244 40.2602C10.8754 40.3975 10.6817 40.4738 10.4136 40.4738L10.4434 38.8561C10.6817 38.8561 10.8754 38.9324 11.0244 39.0698C11.1734 39.2071 11.2478 39.4055 11.2478 39.6497V39.6955V39.6802Z"
             fill="black"
@@ -286,8 +286,8 @@ export function Logo() {
           <path
             d="M91.8895 33.9266V41.4048"
             stroke="black"
-            stroke-width="0.16"
-            stroke-miterlimit="10"
+            strokeWidth="0.16" //Changed from stroke-width to strokeWidth
+            strokeMiterlimit="10" //Changed from stroke-miterlimit to strokeMiterlimit
           />
         </g>
         <defs>

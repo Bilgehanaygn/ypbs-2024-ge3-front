@@ -1,8 +1,8 @@
 import {createContext, Dispatch, ReactNode, SetStateAction, useState} from "react";
 
 export interface userInterface {
-    name: String;
-    surname: String;
+    name: string;
+    surname: string;
     photo: Blob[];
 }
 

@@ -10,12 +10,8 @@ function News() {
 
     useEffect(() => {
         async function fetchData() {
-            try {
                 const response = await axios.get('/api/news'); // Make sure this endpoint returns the correct structure
                 setItems(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
         }
         fetchData();
     }, []);

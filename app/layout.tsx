@@ -8,13 +8,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { userInterface, UserContext } from "@/lib/context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import LoginPage from "@/lib/login-page/LoginPage";
+import LoadingPage from "@/lib/loading/LoadingPage";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
 }: {
+
   children: React.ReactNode;
 }) {
   const theme = createTheme();
@@ -49,11 +50,11 @@ export default function RootLayout({
     return (
       <html lang="en">
       <body className={inter.className}>
-      <div>Loading...</div> 
+      <LoadingPage/>
       </body>
     </html>
     )
-  }//TODO:loading component koyulacak
+  }
   
 
   return ( 

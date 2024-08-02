@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -47,7 +46,7 @@ export default function CustomSelect({ fetchEndpoint, customLabel = "", selected
     }
 
     return (
-            <FormControl sx={{ maxWidth: "150px"}} fullWidth>
+            <FormControl sx={{ fontSize: "0.80rem", color: "black", marginTop: '0px', paddingTop: '0px', maxWidth: "150px" }} fullWidth>
                 <InputLabel id="custom-select-label" sx={{ fontSize: "0.80rem", color: "black" }}>{customLabel}</InputLabel>
                 <Select
                     variant={"standard"}
@@ -56,7 +55,7 @@ export default function CustomSelect({ fetchEndpoint, customLabel = "", selected
                     value={internalSelectedValue}
                     label={customLabel}
                     onChange={handleChange}
-                    sx={{ fontSize: "0.81rem", color: "black", padding: "0px 0px", paddingTop: "0" }}
+                    sx={{ fontSize: "0.81rem", color: "black", padding: "0px 0px", marginTop: '0px', paddingTop: '0px' }}
                 >
                     {fetchedItems.map((item, index) => (
                         <MenuItem key={index} value={item} sx={{ fontSize: "0.80rem", color: "black" }}>{item}</MenuItem>

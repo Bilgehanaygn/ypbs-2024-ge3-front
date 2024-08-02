@@ -4,7 +4,6 @@ import { paperClasses } from "@mui/material";
 
 import { Components, createTheme } from "@mui/material/styles";
 import { TubitakPalette } from "./create-palette";
-import MuiBox from "@mui/material/Box";
 
 export const muiTheme = createTheme();
 
@@ -46,11 +45,11 @@ export function createComponents(config: TubitakPalette): Components {
         root: {
           borderRadius: "5px",
           textTransform: "none",
-          color: "white",
+          color: "black",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          backgroundColor: "red"
+          backgroundColor: "white"
         },
         sizeSmall: {
           padding: "6px 16px",

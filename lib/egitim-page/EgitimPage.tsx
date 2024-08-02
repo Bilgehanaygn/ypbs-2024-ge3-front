@@ -1,22 +1,23 @@
-import {Box, Button, Card, Divider, Grid, IconButton, TextField, Typography} from "@mui/material";
+import { Box, Button, Card, Divider, Grid, IconButton, TextField, Typography } from "@mui/material";
 import ContactsIcon from '@mui/icons-material/Contacts';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import CustomSelect from "@/lib/custom-select/CustomSelect";
 
 interface egitimInterface {
-    id: number
-    egitimTuru: string,
-    okulAdi: string,
-    bolum: string,
-    baslangicTarihi: string,
-    mezuniyetTarihi: string,
-    aciklama: string
+    id: number;
+    egitimTuru: string;
+    okulAdi: string;
+    bolum: string;
+    baslangicTarihi: string;
+    mezuniyetTarihi: string;
+    aciklama: string;
 }
+
 
 // const egitimArray = [
 //     {
@@ -63,30 +64,29 @@ export default function EgitimPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<egitimInterface[]>("api/egitim")
+                const response = await axios.get<egitimInterface[]>("api/egitim");
                 setEgitimsOfUser(response.data);
             } catch (error) {
                 setErrorMessage("Error: " + error.message);
                 console.log(errorMessage);
             }
-        }
+        };
         fetchData();
-    }, [])
+    }, []);
 
     function handleDelete(index: number) {
-
         const newUsers = [...egitimsOfUser];
         newUsers.splice(index, 1);
         setEgitimsOfUser(newUsers);
 
         const sendData = async () => {
             try {
-                const response = await axios.delete("api/egitim/" + egitimsOfUser[index].id)
+                await axios.delete("api/egitim/" + egitimsOfUser[index].id);
             } catch (error) {
-                setErrorMessage("Error: " + error.message); //TODO: toastify ile error at
+                setErrorMessage("Error: " + error.message); // TODO: toastify ile error at
                 console.log(errorMessage);
             }
-        }
+        };
 
         sendData();
     }
@@ -96,27 +96,27 @@ export default function EgitimPage() {
         setEditData(egitimsOfUser[index]);
     }
 
-    function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleInputChange(e: { target: { name: string; value: string } }) {
         if (editData) {
-            setEditData({...editData, [e.target.name]: e.target.value});
+            const { name, value } = e.target as HTMLInputElement;
+            setEditData({ ...editData, [name]: value });
         }
     }
 
     function handleSave() {
         if (editIndex !== null && editData) {
-
             const newUsers = [...egitimsOfUser];
             newUsers[editIndex] = editData;
             setEgitimsOfUser(newUsers);
 
             const sendData = async () => {
                 try {
-                    const response = await axios.put<egitimInterface[]>("api/egitim/" + editData.id, editData)
+                    await axios.put<egitimInterface[]>("api/egitim/" + editData.id, editData);
                 } catch (error) {
-                    setErrorMessage("Error: " + error.message); //TODO: toastify ile error at
+                    setErrorMessage("Error: " + error.message); // TODO: toastify ile error at
                     console.log(errorMessage);
                 }
-            }
+            };
             sendData();
 
             setEditIndex(null);
@@ -124,16 +124,14 @@ export default function EgitimPage() {
         }
     }
 
-
-    //TODO: Componentlara ayrılabilir "Row" "Heading" "DataField" gibi ya da MUI DataGrid bekle
     return (
         <Card>
             <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box display="flex" alignItems="center" justifyContent="left" p={2}>
-                    <ContactsIcon color="inherit" fontSize="small"/>
+                    <ContactsIcon color="inherit" fontSize="small" />
                     <Typography variant="subtitle1" color="black" ml={1} fontSize="small">EĞİTİM</Typography>
                 </Box>
-                <Button //TODO: Serdar'a sorarak buttonların textfieldların vs görünümünü theme'ya ekle
+                <Button // TODO: Serdar'a sorarak buttonların textfieldların vs görünümünü theme'ya ekle
                     size="small"
                     sx={{
                         backgroundColor: "#2e7d32",
@@ -150,7 +148,7 @@ export default function EgitimPage() {
                         }
                     }}
                 >
-                    <AddIcon fontSize="small" sx={{fontSize: "1rem"}}/>
+                    <AddIcon fontSize="small" sx={{ fontSize: "1rem" }} />
                     EKLE
                 </Button>
             </Box>
@@ -176,33 +174,20 @@ export default function EgitimPage() {
                 </Grid>
             </Grid>
 
-            <Divider orientation="horizontal" flexItem style={{backgroundColor: "lightgrey"}}/>
+            <Divider orientation="horizontal" flexItem style={{ backgroundColor: "lightgrey" }} />
 
             {egitimsOfUser.map((user, index) => (
                 <Grid container spacing={2} p={2} key={index}>
                     <Grid item xs={12} sm={2}>
-                        {editIndex === index ? (//TODO: TesxtField yerine drop down menu olara bütün enumları göster
-                            // <TextField
-                            //     name="egitimTuru"
-                            //     value={editData?.egitimTuru}
-                            //     onChange={handleInputChange}
-                            //     variant="standard"
-                            //     size={"small"}
-                            //     sx={{
-                            //         maxWidth: "150px",
-                            //         "& .MuiInputBase-root": {
-                            //             height: "20px",
-                            //         },
-                            //         "& .MuiInputBase-input": {
-                            //             padding: "0px",
-                            //             color: "black",
-                            //             fontSize: "0.81rem"
-                            //         }
-                            //     }}
-                            // />
-                            <CustomSelect fetchEndpoint={"api/egitim/enum"} selectedValue={editData?.egitimTuru} customLabel={"Eğitim Türü"} />
-                        ) : (<Typography variant="body1" color="black" fontSize="small"
-                                         noWrap>{user.egitimTuru}</Typography>)}
+                        {editIndex === index ? (
+                            <CustomSelect
+                                fetchEndpoint="api/egitim/enum"
+                                selectedValue={editData?.egitimTuru || ""}
+                                onChange={(e) => handleInputChange({ target: { name: 'egitimTuru', value: e.target.value } })}
+                            />
+                        ) : (
+                            <Typography variant="body1" color="black" fontSize="small" noWrap>{user.egitimTuru}</Typography>
+                        )}
                     </Grid>
                     <Grid item xs={12} sm={2}>
                         {editIndex === index ? (
@@ -211,7 +196,7 @@ export default function EgitimPage() {
                                 value={editData?.okulAdi}
                                 onChange={handleInputChange}
                                 variant="standard"
-                                size={"small"}
+                                size="small"
                                 sx={{
                                     maxWidth: "150px",
                                     "& .MuiInputBase-root": {
@@ -225,8 +210,7 @@ export default function EgitimPage() {
                                 }}
                             />
                         ) : (
-                            <Typography variant="body1" color="black" fontSize="small"
-                                        noWrap>{user.okulAdi}</Typography>
+                            <Typography variant="body1" color="black" fontSize="small" noWrap>{user.okulAdi}</Typography>
                         )}
                     </Grid>
                     <Grid item xs={12} sm={2}>
@@ -236,7 +220,7 @@ export default function EgitimPage() {
                                 value={editData?.bolum}
                                 onChange={handleInputChange}
                                 variant="standard"
-                                size={"small"}
+                                size="small"
                                 sx={{
                                     maxWidth: "150px",
                                     "& .MuiInputBase-root": {
@@ -254,13 +238,13 @@ export default function EgitimPage() {
                         )}
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        {editIndex === index ? (//TODO: TArihler için ya Takvim aç seçtir ya da TexTfield'a error ekle düzgün formatta değilse hata versin
+                        {editIndex === index ? (
                             <TextField
                                 name="baslangicTarihi"
                                 value={editData?.baslangicTarihi}
                                 onChange={handleInputChange}
                                 variant="standard"
-                                size={"small"}
+                                size="small"
                                 sx={{
                                     maxWidth: "150px",
                                     "& .MuiInputBase-root": {
@@ -274,18 +258,17 @@ export default function EgitimPage() {
                                 }}
                             />
                         ) : (
-                            <Typography variant="body1" color="black" fontSize="small"
-                                        noWrap>{user.baslangicTarihi}</Typography>
+                            <Typography variant="body1" color="black" fontSize="small" noWrap>{user.baslangicTarihi}</Typography>
                         )}
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        {editIndex === index ? (//TODO: Tarih
+                        {editIndex === index ? (
                             <TextField
                                 name="mezuniyetTarihi"
                                 value={editData?.mezuniyetTarihi}
                                 onChange={handleInputChange}
                                 variant="standard"
-                                size={"small"}
+                                size="small"
                                 sx={{
                                     maxWidth: "150px",
                                     "& .MuiInputBase-root": {
@@ -299,8 +282,7 @@ export default function EgitimPage() {
                                 }}
                             />
                         ) : (
-                            <Typography variant="body1" color="black" fontSize="small"
-                                        noWrap>{user.mezuniyetTarihi}</Typography>
+                            <Typography variant="body1" color="black" fontSize="small" noWrap>{user.mezuniyetTarihi}</Typography>
                         )}
                     </Grid>
                     <Grid item xs={12} sm={2}>
@@ -311,7 +293,7 @@ export default function EgitimPage() {
                                     value={editData?.aciklama}
                                     onChange={handleInputChange}
                                     variant="standard"
-                                    size={"small"}
+                                    size="small"
                                     sx={{
                                         maxWidth: "125px",
                                         "& .MuiInputBase-root": {
@@ -345,7 +327,7 @@ export default function EgitimPage() {
                                             }
                                         }}
                                     >
-                                        <SaveIcon fontSize="small"/>
+                                        <SaveIcon fontSize="small" />
                                     </IconButton>
 
                                 ) : (
@@ -366,13 +348,13 @@ export default function EgitimPage() {
                                                 }
                                             }}
                                         >
-                                            <DeleteOutlineIcon fontSize="small"/>
+                                            <DeleteOutlineIcon fontSize="small" />
                                         </IconButton>
                                         <IconButton
                                             size="small"
                                             onClick={() => handleEdit(index)}
                                         >
-                                            <EditIcon fontSize="small"/>
+                                            <EditIcon fontSize="small" />
                                         </IconButton>
                                     </>
                                 )}
@@ -382,10 +364,10 @@ export default function EgitimPage() {
                 </Grid>
             ))}
 
-            <br/>
-            <br/>
-            <br/>
-            <br/>
+            <br />
+            <br />
+            <br />
+            <br />
 
         </Card>
     );

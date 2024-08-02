@@ -6,63 +6,65 @@ import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import React, {useEffect} from "react";
 import axios from "axios";
+import CustomSelect from "@/lib/custom-select/CustomSelect";
 
-interface userInterface {
-    egitimTuru: String,
-    okulAdi: String,
-    bolum: String,
-    baslangicTarihi: String,
-    mezuniyetTarihi: String,
-    aciklama: String
+interface egitimInterface {
+    id: number
+    egitimTuru: string,
+    okulAdi: string,
+    bolum: string,
+    baslangicTarihi: string,
+    mezuniyetTarihi: string,
+    aciklama: string
 }
 
-const userArray = [
-    {
-        egitimTuru: "Doktora",
-        okulAdi: "Hacettepe Üniversitesi",
-        bolum: "Yazılım Mühendisliği",
-        baslangicTarihi: "12.09.2020",
-        mezuniyetTarihi: "12.09.2024",
-        aciklama: "Mikro Servisler"
-    },
-    {
-        egitimTuru: "Lisans",
-        okulAdi: "Hacettepe Üniversitesi",
-        bolum: "Yazılım Mühendisliği",
-        baslangicTarihi: "12.01.2023",
-        mezuniyetTarihi: "Devam Ediyor",
-        aciklama: "Bilgisayar Bilimleri"
-    },
-    {
-        egitimTuru: "Lisans",
-        okulAdi: "Hacettepe Üniversitesi",
-        bolum: "Yazılım Mühendisliği",
-        baslangicTarihi: "12.01.2023",
-        mezuniyetTarihi: "Devam Ediyor",
-        aciklama: "Bilgisayar Bilimleri"
-    },
-    {
-        egitimTuru: "Lisans",
-        okulAdi: "Hacettepe Üniversitesi",
-        bolum: "Yazılım Mühendisliği",
-        baslangicTarihi: "12.01.2023",
-        mezuniyetTarihi: "Devam Ediyor",
-        aciklama: "Bilgisayar Bilimleri"
-    }
-];
+// const egitimArray = [
+//     {
+//         egitimTuru: "Doktora",
+//         okulAdi: "Hacettepe Üniversitesi",
+//         bolum: "Yazılım Mühendisliği",
+//         baslangicTarihi: "12.09.2020",
+//         mezuniyetTarihi: "12.09.2024",
+//         aciklama: "Mikro Servisler"
+//     },
+//     {
+//         egitimTuru: "Lisans",
+//         okulAdi: "Hacettepe Üniversitesi",
+//         bolum: "Yazılım Mühendisliği",
+//         baslangicTarihi: "12.01.2023",
+//         mezuniyetTarihi: "Devam Ediyor",
+//         aciklama: "Bilgisayar Bilimleri"
+//     },
+//     {
+//         egitimTuru: "Lisans",
+//         okulAdi: "Hacettepe Üniversitesi",
+//         bolum: "Yazılım Mühendisliği",
+//         baslangicTarihi: "12.01.2023",
+//         mezuniyetTarihi: "Devam Ediyor",
+//         aciklama: "Bilgisayar Bilimleri"
+//     },
+//     {
+//         egitimTuru: "Lisans",
+//         okulAdi: "Hacettepe Üniversitesi",
+//         bolum: "Yazılım Mühendisliği",
+//         baslangicTarihi: "12.01.2023",
+//         mezuniyetTarihi: "Devam Ediyor",
+//         aciklama: "Bilgisayar Bilimleri"
+//     }
+// ];
 
 
 export default function EgitimPage() {
-    const [users, setUsers] = React.useState<userInterface[]>(userArray);
-    const [errorMessage, setErrorMessage] = React.useState<String>("");
+    const [egitimsOfUser, setEgitimsOfUser] = React.useState<egitimInterface[]>([]);
+    const [errorMessage, setErrorMessage] = React.useState<string>("");
     const [editIndex, setEditIndex] = React.useState<number | null>(null);
-    const [editData, setEditData] = React.useState<userInterface | null>(null);
+    const [editData, setEditData] = React.useState<egitimInterface | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get<userInterface[]>("api/egitim")
-                setUsers(response.data);
+                const response = await axios.get<egitimInterface[]>("api/egitim")
+                setEgitimsOfUser(response.data);
             } catch (error) {
                 setErrorMessage("Error: " + error.message);
                 console.log(errorMessage);
@@ -72,15 +74,26 @@ export default function EgitimPage() {
     }, [])
 
     function handleDelete(index: number) {
-        const newUsers = [...users];
+
+        const newUsers = [...egitimsOfUser];
         newUsers.splice(index, 1);
-        setUsers(newUsers);
-        //TODO: backend'de veriyi sil
+        setEgitimsOfUser(newUsers);
+
+        const sendData = async () => {
+            try {
+                const response = await axios.delete("api/egitim/" + egitimsOfUser[index].id)
+            } catch (error) {
+                setErrorMessage("Error: " + error.message); //TODO: toastify ile error at
+                console.log(errorMessage);
+            }
+        }
+
+        sendData();
     }
 
     function handleEdit(index: number) {
         setEditIndex(index);
-        setEditData(users[index]);
+        setEditData(egitimsOfUser[index]);
     }
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -91,10 +104,21 @@ export default function EgitimPage() {
 
     function handleSave() {
         if (editIndex !== null && editData) {
-            const newUsers = [...users];
+
+            const newUsers = [...egitimsOfUser];
             newUsers[editIndex] = editData;
-            setUsers(newUsers);
-            //TODO: backend e veriyi gönder
+            setEgitimsOfUser(newUsers);
+
+            const sendData = async () => {
+                try {
+                    const response = await axios.put<egitimInterface[]>("api/egitim/" + editData.id, editData)
+                } catch (error) {
+                    setErrorMessage("Error: " + error.message); //TODO: toastify ile error at
+                    console.log(errorMessage);
+                }
+            }
+            sendData();
+
             setEditIndex(null);
             setEditData(null);
         }
@@ -154,28 +178,29 @@ export default function EgitimPage() {
 
             <Divider orientation="horizontal" flexItem style={{backgroundColor: "lightgrey"}}/>
 
-            {users.map((user, index) => (
+            {egitimsOfUser.map((user, index) => (
                 <Grid container spacing={2} p={2} key={index}>
                     <Grid item xs={12} sm={2}>
-                        {editIndex === index ? (
-                            <TextField
-                                name="egitimTuru"
-                                value={editData?.egitimTuru}
-                                onChange={handleInputChange}
-                                variant="standard"
-                                size={"small"}
-                                sx={{
-                                    maxWidth: "150px",
-                                    "& .MuiInputBase-root": {
-                                        height: "20px",
-                                    },
-                                    "& .MuiInputBase-input": {
-                                        padding: "0px",
-                                        color: "black",
-                                        fontSize: "0.81rem"
-                                    }
-                                }}
-                            />
+                        {editIndex === index ? (//TODO: TesxtField yerine drop down menu olara bütün enumları göster
+                            // <TextField
+                            //     name="egitimTuru"
+                            //     value={editData?.egitimTuru}
+                            //     onChange={handleInputChange}
+                            //     variant="standard"
+                            //     size={"small"}
+                            //     sx={{
+                            //         maxWidth: "150px",
+                            //         "& .MuiInputBase-root": {
+                            //             height: "20px",
+                            //         },
+                            //         "& .MuiInputBase-input": {
+                            //             padding: "0px",
+                            //             color: "black",
+                            //             fontSize: "0.81rem"
+                            //         }
+                            //     }}
+                            // />
+                            <CustomSelect fetchEndpoint={"api/egitim/enum"} selectedValue={editData?.egitimTuru} customLabel={"Eğitim Türü"} />
                         ) : (<Typography variant="body1" color="black" fontSize="small"
                                          noWrap>{user.egitimTuru}</Typography>)}
                     </Grid>
@@ -229,7 +254,7 @@ export default function EgitimPage() {
                         )}
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        {editIndex === index ? (
+                        {editIndex === index ? (//TODO: TArihler için ya Takvim aç seçtir ya da TexTfield'a error ekle düzgün formatta değilse hata versin
                             <TextField
                                 name="baslangicTarihi"
                                 value={editData?.baslangicTarihi}
@@ -254,7 +279,7 @@ export default function EgitimPage() {
                         )}
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        {editIndex === index ? (
+                        {editIndex === index ? (//TODO: Tarih
                             <TextField
                                 name="mezuniyetTarihi"
                                 value={editData?.mezuniyetTarihi}
@@ -300,8 +325,7 @@ export default function EgitimPage() {
                                     }}
                                 />
                             ) : (
-                                <Typography variant="body1" color="black" fontSize="small"
-                                            noWrap>{user.aciklama}</Typography>
+                                <Typography variant="body1" color="black" fontSize="small">{user.aciklama}</Typography>
                             )}
                             <Box display="flex" gap={1}>
                                 {editIndex === index ? (
@@ -357,6 +381,12 @@ export default function EgitimPage() {
                     </Grid>
                 </Grid>
             ))}
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
         </Card>
     );
 }

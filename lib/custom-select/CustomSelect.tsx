@@ -47,8 +47,7 @@ export default function CustomSelect({ fetchEndpoint, customLabel = "", selected
     }
 
     return (
-        <Box>
-            <FormControl sx={{ maxWidth: 150, margin: "auto 0", padding: "0px 0px" }} fullWidth>
+            <FormControl sx={{ maxWidth: "150px"}} fullWidth>
                 <InputLabel id="custom-select-label" sx={{ fontSize: "0.80rem", color: "black" }}>{customLabel}</InputLabel>
                 <Select
                     variant={"standard"}
@@ -64,6 +63,5 @@ export default function CustomSelect({ fetchEndpoint, customLabel = "", selected
                     ))}
                 </Select>
             </FormControl>
-        </Box>
     );
 }

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Grid, Typography, Card, TextField, Button } from '@mui/material';
 
-export function DatagridFilters({ nameSurname, unvan, gorev, birim, proje, katki, takim, setNameSurname, setUnvan, setGorev, setBirim, setProje, setKatki, setTakim, handleSearch }) {
+export function DatagridFilters({ nameSurname, unvan, gorev, birim, proje, katki, takim, setNameSurname, setUnvan, setGorev, setBirim, setProje, setKatki, setTakim
+
+ }) {
 
     const cardStyle = {
         padding: '16px',
@@ -88,17 +90,6 @@ export function DatagridFilters({ nameSurname, unvan, gorev, birim, proje, katki
                         value={takim}
                         onChange={(e) => setTakim(e.target.value)}
                     />
-                </Grid>
-                <Grid item xs={1.5}>
-                    <Button
-                        style={buttonStyle}
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        onClick={handleSearch}
-                    >
-                        Sorgula
-                    </Button>
                 </Grid>
             </Grid>
         </Card>

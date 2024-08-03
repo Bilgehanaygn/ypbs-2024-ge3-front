@@ -40,18 +40,34 @@ const UsersTable = () => {
   }, [nameSurname, unvan, gorev, birim, proje]);
 
   const columns: GridColDef[] = [
-    { field: 'isimSoyisim', headerName: 'Ad Soyad', flex: 1 },
-    { field: 'birim', headerName: 'Birim', flex: 1 },
-    { field: 'unvan', headerName: 'Unvan', flex: 1 },
-    { field: 'gorev', headerName: 'Görev', flex: 1 },
+    { field: 'isimSoyisim', 
+      headerName: 'Ad Soyad', 
+      flex: 1 },
+    { field: 'birim', 
+      headerName: 'Birim', 
+      flex: 1 },
+    { field: 'unvan', 
+      headerName: 'Unvan', 
+      flex: 1 },
+    { field: 'proje', ///gorev + proje
+      headerName: 'Görev', 
+      flex: 1 },
     {
       field: 'email',
       headerName: 'E-Posta',
       flex: 1,
+
       renderCell: (params) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <EmailIcon color="primary" />
-          <span style={{ marginLeft: 8 }}>{params.value}</span>
+        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+          <a 
+            href={`mailto:${params.row.email}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <EmailIcon color="secondary" />
+          </a>
+          <span style={{ marginLeft: 8, lineHeight: '40px' }}>{params.value}</span>
         </div>
       ),
     },
@@ -60,16 +76,28 @@ const UsersTable = () => {
       headerName: 'Telefon',
       flex: 1,
       renderCell: (params) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <PhoneIcon color="secondary" />
-          <span style={{ marginLeft: 8 }}>{params.value}</span>
-        </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <a 
+            href={`tel:${params.row.telefon}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center' }}
+            >
+              <PhoneIcon color="secondary" />
+            </a>
+            <span style={{ marginLeft: 8 }}>{params.value}</span>
+          </div>
       ),
     },
     {
-      field: 'proje',
-      headerName: 'Proje',
+      field: "expand",
+      headerName: "",
       flex: 1,
+      maxWidth: 80,
+      minWidth:50,
+      disableColumnMenu: true,
+      sortable:false,
+      
       renderCell: (params) => (
         <IconButton>
           <OpenInNewIcon />

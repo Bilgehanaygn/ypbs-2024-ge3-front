@@ -22,6 +22,10 @@ export const NavigationBar = () => {
   const router = useRouter();
   const [userState,setUserState] = useContext(UserContext);
 
+  const routeToHome = () => {
+    router.push('/'); // Navigate to home page
+  };
+
   async function handleLogout(){
     try {
     
@@ -44,7 +48,7 @@ export const NavigationBar = () => {
       }}
     >
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={2} onClick={routeToHome}>
           <Logo />
           <Divider
             orientation="vertical"

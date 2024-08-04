@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext } from "react";
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from "next/navigation";
 
 import {
   AppBar,
@@ -16,22 +16,20 @@ import { UserComponent } from "../user-component/UserComponent";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Logo } from "../logo-component/logo";
 import axios from "axios";
-import { UserContext } from "../context/UserContext";
+import useSWR from "swr";
 
 export const NavigationBar = () => {
   const router = useRouter();
-  const [userState,setUserState] = useContext(UserContext);
+  const { data: userState, mutate } = useSWR("/api/user/userHeader");
 
-  async function handleLogout(){
+  async function handleLogout() {
     try {
-    
       const response = await axios.get("api/auth/logout");
-      console.log(response.data);   
-      setUserState(null);
+      console.log(response.data);
+      mutate(() => null);
       router.push("/");
-
     } catch (error) {
-      console.error('Hata:', error);
+      console.error("Hata:", error);
     }
   }
 
@@ -41,8 +39,7 @@ export const NavigationBar = () => {
       style={{
         height: "65px",
         backgroundColor: "white",
-      }}
-    >
+      }}>
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
         <Stack direction="row" alignItems="center" spacing={2}>
           <Logo />
@@ -62,8 +59,7 @@ export const NavigationBar = () => {
           spacing={2}
           style={{
             alignItems: "center",
-          }}
-        >
+          }}>
           <Button color="inherit" sx={{ fontSize: "0.75rem" }}>
             <Typography variant="caption">Genel</Typography>
           </Button>

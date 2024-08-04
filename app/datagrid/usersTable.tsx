@@ -46,6 +46,7 @@ const UsersTable = () => {
       flex:0,
       sortable: false,
       disableColumnMenu: true,
+      resizable:false,
       renderCell: (params) => (
         <div style={{ display: 'flex', justifyContent: 'right', alignItems: 'center', height: '100%' ,width:"100%"}}>
         <Avatar></Avatar>
@@ -107,6 +108,7 @@ const UsersTable = () => {
       width: 50,
       disableColumnMenu: true,
       sortable:false,
+      resizable:false,
       
       renderCell: (params) => (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' ,height:"100%"}}>

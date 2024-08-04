@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
-import { IconButton } from '@mui/material';
+import { Avatar, Card, IconButton } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -40,6 +40,17 @@ const UsersTable = () => {
   }, [nameSurname, unvan, gorev, birim, proje]);
 
   const columns: GridColDef[] = [
+    { field : "avatar",
+      headerName : "",
+      width: 10,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => (
+        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+        <Avatar></Avatar>
+        </div>
+      )
+    },
     { field: 'isimSoyisim', 
       headerName: 'Ad Soyad', 
       flex: 1 },

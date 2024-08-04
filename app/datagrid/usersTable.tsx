@@ -42,11 +42,12 @@ const UsersTable = () => {
   const columns: GridColDef[] = [
     { field : "avatar",
       headerName : "",
-      width: 10,
+      width: 60,
+      flex:0,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => (
-        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'right', alignItems: 'center', height: '100%' ,width:"100%"}}>
         <Avatar></Avatar>
         </div>
       )
@@ -103,16 +104,16 @@ const UsersTable = () => {
     {
       field: "expand",
       headerName: "",
-      flex: 1,
-      maxWidth: 80,
-      minWidth:50,
+      width: 50,
       disableColumnMenu: true,
       sortable:false,
       
       renderCell: (params) => (
-        <IconButton>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' ,height:"100%"}}>
+        <IconButton style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
           <OpenInNewIcon />
         </IconButton>
+        </div>
       ),
     },
   ];

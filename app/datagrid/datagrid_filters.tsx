@@ -31,6 +31,16 @@ export function DatagridFilters({ nameSurname, unvan, gorev, birim, proje, katki
                         onChange={(e) => setNameSurname(e.target.value)}
                     />
                 </Grid>
+                <Grid item xs={1.5}>
+                    <TextField
+                        style={inputStyle}
+                        fullWidth
+                        label="Birim"
+                        variant="outlined"
+                        value={birim}
+                        onChange={(e) => setBirim(e.target.value)}
+                    />
+                </Grid>
                 <Grid item xs={1.5} >
                     <TextField
                         style={inputStyle}
@@ -49,16 +59,6 @@ export function DatagridFilters({ nameSurname, unvan, gorev, birim, proje, katki
                         variant="outlined"
                         value={gorev}
                         onChange={(e) => setGorev(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={1.5}>
-                    <TextField
-                        style={inputStyle}
-                        fullWidth
-                        label="Birim"
-                        variant="outlined"
-                        value={birim}
-                        onChange={(e) => setBirim(e.target.value)}
                     />
                 </Grid>
                 <Grid item xs={1.5}>

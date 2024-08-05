@@ -23,9 +23,9 @@ const UsersTable = () => {
         const response = await axios.get('/api/user/findUsersWithFilters', {
           params: {
             nameSurname,
+            birim,
             unvan,
             gorev,
-            birim,
             proje,
           },
         });
@@ -47,18 +47,18 @@ const UsersTable = () => {
       disableColumnMenu: true,
       resizable: false,
       renderCell: (params) => (
-        <div style={{ display: 'flex', justifyContent: 'right', alignItems: 'center', height: '100%', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>
           <Avatar></Avatar>
         </div>
       ),
     },
     {
       field: 'isimSoyisim',
-      headerName: 'Ad Soyad',
+      headerName: 'İsim Soyisim',
       flex: 1,
       renderCell: (params) => (
         <div style={{ display: 'flex', alignItems: 'center', width: '100%', height: '100%' }}>
-          <Typography variant="body2">{params.value}</Typography>
+          <Typography variant="body2" style={{marginTop:10,marginBottom:10}}>{params.value}</Typography>
         </div>
       ),
     },
@@ -68,7 +68,9 @@ const UsersTable = () => {
       flex: 1,
       renderCell: (params) => (
         <div style={{ display: 'flex', alignItems: 'center', width: '100%', height: '100%' }}>
-          <Typography variant="body2">{params.value}</Typography>
+          <Typography variant="body2" style={{marginTop:10,marginBottom:10}}>
+            {params.value}
+            </Typography>
         </div>
       ),
     },
@@ -78,27 +80,30 @@ const UsersTable = () => {
       flex: 1,
       renderCell: (params) => (
         <div style={{ display: 'flex', alignItems: 'center', width: '100%', height: '100%' }}>
-          <Typography variant="body2">{params.value}</Typography>
+          <Typography variant="body2" style={{marginTop:10,marginBottom:10}}>
+            {params.value}
+            </Typography>
         </div>
       ),
     },
     {
-      field: 'gorev', // gorev + proje
-      headerName: 'Görev',
+      field: 'gorevVeProje', // gorev + proje
+      headerName: 'Görev - Proje',
       flex: 1,
       renderCell: (params) => (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%', height: '100%' }}>
-          {params.value.map((gorev, index) => (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%', height: '100%',
+        marginTop:15,marginBottom:15 }}>
+          {params.value.map((item, index) => (
             <Typography
               key={index}
               variant="body2"
               style={{
                 width: '100%',
-                whiteSpace: 'normal', // Allow text to wrap
-                wordWrap: 'break-word', // Break words if necessary
+                whiteSpace: 'normal', 
+                wordWrap: 'break-word', 
               }}
             >
-              • {gorev}
+            {item.gorev} - {item.proje} 
             </Typography>
           ))}
         </div>
@@ -118,7 +123,7 @@ const UsersTable = () => {
           >
             <EmailIcon color="secondary" />
           </a>
-          <Typography variant="body2" style={{ marginLeft: 8 }}>
+          <Typography variant="body2" style={{ marginLeft: 8 ,marginTop:10,marginBottom:10}}>
             {params.value}
           </Typography>
         </div>

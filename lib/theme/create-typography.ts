@@ -73,6 +73,7 @@ export const createTypography = () => {
       fontWeight: 700,
       fontSize: "1.125rem",
       lineHeight: 1.2,
+
     },
   } as Typography;
 };

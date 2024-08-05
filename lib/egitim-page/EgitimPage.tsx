@@ -27,35 +27,24 @@ export default function EgitimPage() {
     const [egitimsOfUser, setEgitimsOfUser] = React.useState<egitimInterface[]>([]);
     const [editIndex, setEditIndex] = React.useState<number | null>(null);
     const [editData, setEditData] = React.useState<egitimInterface | null>(null);
-    const [newData, setNewData] = React.useState<boolean>(false);
+
+    const fetchData = async () => {
+        const response = await axios.get<egitimInterface[]>("api/egitim");
+        setEgitimsOfUser(response.data);
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get<egitimInterface[]>("api/egitim");
-                setEgitimsOfUser(response.data);
-            } catch (error) {
-                console.log(error.message);
-            }
-        };
         fetchData();
-        setNewData(false);
-    }, [newData]);
+    }, []);
 
-    function handleDelete(index: number) {
-        const newUsers = [...egitimsOfUser];
-        newUsers.splice(index, 1);
-        setEgitimsOfUser(newUsers);
+    async function handleDelete(index: number) {
 
         const sendData = async () => {
-            try {
-                await axios.delete("api/egitim/" + egitimsOfUser[index].id);
-            } catch (error) {
-                console.log(error.message);
-            }
+            await axios.delete("api/egitim/" + egitimsOfUser[index].id);
         };
 
-        sendData();
+        await sendData();
+        await fetchData();
     }
 
     function handleEdit(index: number) {
@@ -83,24 +72,16 @@ export default function EgitimPage() {
 
     async function handleSave() {
         if (editIndex !== null && editData) {
-            const newUsers = [...egitimsOfUser];
-            newUsers[editIndex] = editData;
-            setEgitimsOfUser(newUsers);
 
-            try {
-                if (editData.id) {
-                    await axios.put<egitimInterface>("api/egitim/" + editData.id, editData);
-                } else {
-                    const response = await axios.post<egitimInterface>("api/egitim", editData);
-                    newUsers[editIndex] = {...editData, id: response.data.id};
-                    setEgitimsOfUser(newUsers);
-                }
-            } catch (error) {
-                console.log(error.message);
+            if (editData.id) {
+                await axios.put<egitimInterface>("api/egitim/" + editData.id, editData);
+            } else {
+                const response = await axios.post<egitimInterface>("api/egitim", editData);
             }
             setEditIndex(null);
             setEditData(null);
-            setNewData(true);
+
+            fetchData();
         }
     }
 
@@ -175,7 +156,7 @@ export default function EgitimPage() {
                 <Divider orientation="horizontal" flexItem style={{backgroundColor: "lightgrey"}}/>
 
                 {egitimsOfUser.map((user, index) => (
-                    <Grid container spacing={2} p={2} key={index}>
+                    <Grid container spacing={2} p={2} key={index} alignItems={"flex-end"} justifyContent="flex-end">
                         <Grid item xs={12} sm={2}>
                             {editIndex === index ? (
                                 <CustomSelect
@@ -343,7 +324,7 @@ export default function EgitimPage() {
                         </Grid>
 
                         <Grid item xs={12} sm={2}>
-                            <Box display="flex" alignItems="center" justifyContent="space-between"
+                            <Box display="flex" alignItems="flex-end" justifyContent="space-between"
                                  sx={{padding: "0px 0px"}}>
                                 {editIndex === index ? (
                                     <TextField
@@ -371,9 +352,9 @@ export default function EgitimPage() {
                                     />
                                 ) : (
                                     <Typography variant="body1" color="black"
-                                                fontSize="small">{user.aciklama}</Typography>
+                                                fontSize="small" noWrap>{user.aciklama}</Typography>
                                 )}
-                                <Box display="flex" gap={1}>
+                                <Box display="flex" justifyItems={"flex-end"} alignItems={"flex-end"} gap={1}>
                                     {editIndex === index ? (
                                         <>
 

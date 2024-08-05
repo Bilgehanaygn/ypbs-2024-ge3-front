@@ -26,6 +26,10 @@ export const NavigationBar = () => {
     router.push('/'); // Navigate to home page
   };
 
+  const routeToRehber = () => {
+    router.push('/datagrid'); // Navigate to home page
+  };
+
   async function handleLogout(){
     try {
     
@@ -71,7 +75,7 @@ export const NavigationBar = () => {
           <Button color="inherit" sx={{ fontSize: "0.75rem" }}>
             <Typography variant="caption">Genel</Typography>
           </Button>
-          <Button color="inherit" sx={{ fontSize: "0.75rem" }}>
+          <Button onClick={routeToRehber} color="inherit" sx={{ fontSize: "0.75rem" }}>
             <Typography variant="caption">Rehber</Typography>
           </Button>
           <Button color="inherit" sx={{ fontSize: "0.75rem" }}>

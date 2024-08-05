@@ -12,6 +12,8 @@ export const createTypography = () => {
       fontSize: "0.875rem",
       fontWeight: 400,
       lineHeight: 1.57,
+      color:"black",
+
     },
     button: {
       fontWeight: 600,

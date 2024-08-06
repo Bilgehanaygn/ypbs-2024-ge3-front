@@ -27,6 +27,7 @@ const UsersTable = () => {
             unvan,
             gorev,
             proje,
+            takim
           },
         });
         setUsers(response.data);
@@ -36,7 +37,7 @@ const UsersTable = () => {
     };
 
     fetchUsers();
-  }, [nameSurname, unvan, gorev, birim, proje]);
+  }, [nameSurname, unvan, gorev, birim, proje, takim]);
 
   const columns: GridColDef[] = [
     {

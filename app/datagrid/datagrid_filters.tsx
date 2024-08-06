@@ -1,97 +1,90 @@
 import React from 'react';
-import { Grid, Typography, Card, TextField, Button } from '@mui/material';
+import { TextField, Button, MenuItem, Box, Card } from '@mui/material';
 
-export function DatagridFilters({ nameSurname, unvan, gorev, birim, proje, katki, takim, setNameSurname, setUnvan, setGorev, setBirim, setProje, setKatki, setTakim
+import AddIcon from '@mui/icons-material/Add';
+import FilterBox from './filterBox';
 
- }) {
+export function DatagridFilters({
+  nameSurname, unvan, gorev, birim, proje, katki, takim,
+  setNameSurname, setUnvan, setGorev, setBirim, setProje, setKatki, setTakim
+}) {
 
-    const cardStyle = {
-        padding: '16px',
-        marginBottom: '16px',
-    };
 
-    const inputStyle = {
-        marginBottom: '16px',
-    };
+  const inputStyle = {
+    flex: 1,
+  };
 
-    const buttonStyle = {
-        marginTop: '16px',
-    };
+  return (
+    <Card sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between', 
+        gap: '8px',
+        boxSizing: 'border-box', 
+    }}>
+        <Box>
+            <TextField
+                style={{width: '250px'}} 
+                label="İsim Soyisim"
+                variant="outlined"
+                size= "small"
+                value={nameSurname}
+                onChange={(e) => setNameSurname(e.target.value)}
+            />
+        </Box>
 
-    return (
-        <Card style={cardStyle}>
-            <Grid container spacing={2}>
-                <Grid item xs={1.5} >
-                    <TextField
-                        style={inputStyle}
-                        fullWidth
-                        label="İsim Soyisim"
-                        variant="outlined"
-                        value={nameSurname}
-                        onChange={(e) => setNameSurname(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={1.5}>
-                    <TextField
-                        style={inputStyle}
-                        fullWidth
-                        label="Birim"
-                        variant="outlined"
-                        value={birim}
-                        onChange={(e) => setBirim(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={1.5} >
-                    <TextField
-                        style={inputStyle}
-                        fullWidth
-                        label="Unvan"
-                        variant="outlined"
-                        value={unvan}
-                        onChange={(e) => setUnvan(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={1.5} >
-                    <TextField
-                        style={inputStyle}
-                        fullWidth
-                        label="Görev"
-                        variant="outlined"
-                        value={gorev}
-                        onChange={(e) => setGorev(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={1.5}>
-                    <TextField
-                        style={inputStyle}
-                        fullWidth
-                        label="Proje"
-                        variant="outlined"
-                        value={proje}
-                        onChange={(e) => setProje(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={1.5}>
-                    <TextField
-                        style={inputStyle}
-                        fullWidth
-                        label="Katkı"
-                        variant="outlined"
-                        value={katki}
-                        onChange={(e) => setKatki(e.target.value)}
-                    />
-                </Grid>
-                <Grid item xs={1.5} >
-                    <TextField
-                        style={inputStyle}
-                        fullWidth
-                        label="Takım"
-                        variant="outlined"
-                        value={takim}
-                        onChange={(e) => setTakim(e.target.value)}
-                    />
-                </Grid>
-            </Grid>
-        </Card>
-    );
+        <FilterBox 
+            title={"Birim"}
+            setFunction={setBirim}
+            link={'/api/kurumsal/getBirims'}
+        />
+
+        <FilterBox 
+            title={"Unvan"}
+            setFunction={setUnvan}
+            link={'/api/kurumsal/getUnvans'}
+        />
+
+        <FilterBox 
+                title={"Görev"}
+                setFunction={setGorev}
+                link={'/api/kurumsalProje/getGorevs'}
+            />
+
+        <FilterBox 
+            title={"Proje"}
+            setFunction={setProje}
+            link={'/api/proje/getNames'}
+        />
+
+        <FilterBox 
+            title={"Takım"}
+            setFunction={setTakim}
+            link={'/api/proje/getTeams'}
+        />
+        <Box>
+            
+            <Button
+                variant="contained"
+                color="success"
+                sx={{ 
+                    backgroundColor: 'green', 
+                    color: 'white', 
+                    width: '140px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.78,
+                    justifyContent: 'flex-start',
+                    '&:hover': {
+                       backgroundColor: "darkgreen",
+                    }
+                 }}
+            >
+                <AddIcon fontSize="small"/> 
+                Personel Ekle
+            </Button>
+
+        </Box>
+    </Card>
+  );
 }

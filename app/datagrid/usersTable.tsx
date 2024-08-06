@@ -172,7 +172,7 @@ const UsersTable = () => {
   };
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 500, width: '100%' }}>
       <DatagridFilters
         nameSurname={nameSurname}
         setNameSurname={setNameSurname}
@@ -189,7 +189,6 @@ const UsersTable = () => {
         takim={takim}
         setTakim={setTakim}
       />
-      <br />
       <DataGrid
         rows={users}
         columns={columns}

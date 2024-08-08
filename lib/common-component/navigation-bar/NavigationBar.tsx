@@ -12,9 +12,9 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import { UserComponent } from "../user-component/UserComponent";
+import { UserComponent } from "@/lib/common-component/navigation-bar/user-component/UserComponent";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { Logo } from "../logo-component/logo";
+import { Logo } from "@/lib/common-component/logo-component/logo";
 import axios from "axios";
 import useSWR from "swr";
 

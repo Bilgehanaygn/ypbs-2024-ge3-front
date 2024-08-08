@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import BornTodayPage from "../../lib/born-today/BornTodayPage";
+import BornTodayPage from "@/lib/home-page/born-today/BornTodayPage";
 
 export default function Home() {
   return <BornTodayPage />;

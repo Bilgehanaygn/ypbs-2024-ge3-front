@@ -11,7 +11,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import React, {useEffect} from "react";
 import axios from "axios";
-import CustomSelect from "@/lib/custom-select/CustomSelect";
+import CustomSelect from "@/lib/common-component/custom-select/CustomSelect";
 
 interface egitimInterface {
     id?: number;
@@ -23,7 +23,7 @@ interface egitimInterface {
     aciklama: string;
 }
 
-export default function EgitimPage() {
+export default function EgitimComponent() {
     const [egitimsOfUser, setEgitimsOfUser] = React.useState<egitimInterface[]>([]);
     const [editIndex, setEditIndex] = React.useState<number | null>(null);
     const [editData, setEditData] = React.useState<egitimInterface | null>(null);
@@ -132,31 +132,31 @@ export default function EgitimPage() {
                     </Button>
                 </Box>
 
-                <Grid container spacing={2} p={2}>
+                <Grid container spacing={2} p={2} alignItems={"flex-end"} justifyContent="space-between">
                     <Grid item xs={12} sm={2}>
-                        <Typography variant="body1" color="black" fontSize="small" noWrap>Eğitim Türü</Typography>
+                        <Typography variant="caption" color="black" fontSize="small" noWrap>Eğitim Türü</Typography>
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        <Typography variant="body1" color="black" fontSize="small" noWrap>Üniversite/Okul</Typography>
+                        <Typography variant="caption" color="black" fontSize="small" noWrap>Üniversite/Okul</Typography>
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        <Typography variant="body1" color="black" fontSize="small" noWrap>Bölüm</Typography>
+                        <Typography variant="caption" color="black" fontSize="small" noWrap>Bölüm</Typography>
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        <Typography variant="body1" color="black" fontSize="small" noWrap>Başlangıç Tarihi</Typography>
+                        <Typography variant="caption" color="black" fontSize="small" noWrap>Başlangıç Tarihi</Typography>
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        <Typography variant="body1" color="black" fontSize="small" noWrap>Mezuniyet Tarihi</Typography>
+                        <Typography variant="caption" color="black" fontSize="small" noWrap>Mezuniyet Tarihi</Typography>
                     </Grid>
                     <Grid item xs={12} sm={2}>
-                        <Typography variant="body1" color="black" fontSize="small" noWrap>Açıklama</Typography>
+                        <Typography variant="caption" color="black" fontSize="small" noWrap>Açıklama</Typography>
                     </Grid>
                 </Grid>
 
                 <Divider orientation="horizontal" flexItem style={{backgroundColor: "lightgrey"}}/>
 
                 {egitimsOfUser.map((user, index) => (
-                    <Grid container spacing={2} p={2} key={index} alignItems={"flex-end"} justifyContent="flex-end">
+                    <Grid container spacing={2} p={2} key={index} alignItems={"flex-end"} justifyContent="space-between">
                         <Grid item xs={12} sm={2}>
                             {editIndex === index ? (
                                 <CustomSelect
@@ -209,7 +209,7 @@ export default function EgitimPage() {
                                 <TextField
                                     required
                                     error={!editData?.bolum}
-                                    helperText={!editData?.bolum ? "Required Field" : ""}
+                                    placeholder={!editData?.bolum ? "Required Field" : ""}
                                     name="bolum"
                                     value={editData?.bolum}
                                     onChange={handleInputChange}
@@ -221,9 +221,12 @@ export default function EgitimPage() {
                                             height: "20px",
                                         },
                                         "& .MuiInputBase-input": {
-                                            padding: "0px",
+                                            padding: "0px 0px 5px 0px",
                                             color: "black",
-                                            fontSize: "0.81rem"
+                                            fontSize: "0.81rem",
+                                            "&::placeholder": {
+                                                color: "red",
+                                            }
                                         }
                                     }}
                                 />
@@ -330,23 +333,24 @@ export default function EgitimPage() {
                                     <TextField
                                         required
                                         error={!editData?.aciklama}
-                                        helperText={!editData?.aciklama ? "Required Field" : ""}
+                                        placeholder={!editData?.aciklama ? "Required Field" : ""}
                                         name="aciklama"
                                         value={editData?.aciklama}
                                         onChange={handleInputChange}
                                         variant="standard"
                                         size="small"
                                         sx={{
-                                            maxWidth: "125px",
+                                            maxWidth: "150px",
                                             "& .MuiInputBase-root": {
                                                 height: "20px",
                                             },
                                             "& .MuiInputBase-input": {
-                                                padding: "0px",
+                                                padding: "0px 0px 5px 0px",
                                                 color: "black",
                                                 fontSize: "0.81rem",
-                                                marginTop: "0px",
-                                                paddingTop: "0px"
+                                                "&::placeholder": {
+                                                    color: "red",
+                                                }
                                             }
                                         }}
                                     />

@@ -2,14 +2,13 @@
 
 import { ThemeProvider } from "@mui/material/styles";
 import { Box } from "@mui/material";
+import RehberBox from "../rehber/RehberBox";
 
 
 
 export default function HomePage() {
   
   return (
-    <div className="anaSayfaDiv">
-        Ana Sayfa
-    </div>
+    <RehberBox variant="home"/>
   );
 }

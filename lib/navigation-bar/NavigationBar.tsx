@@ -23,11 +23,11 @@ export const NavigationBar = () => {
   const [userState,setUserState] = useContext(UserContext);
 
   const routeToHome = () => {
-    router.push('/'); // Navigate to home page
+    router.push('/'); 
   };
 
   const routeToRehber = () => {
-    router.push('/datagrid'); // Navigate to home page
+    router.push('/rehber'); 
   };
 
   async function handleLogout(){
@@ -52,7 +52,7 @@ export const NavigationBar = () => {
       }}
     >
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-        <Stack direction="row" alignItems="center" spacing={2} onClick={routeToHome}>
+        <Stack direction="row" alignItems="center" spacing={2} onClick={routeToHome} sx={{ cursor: 'pointer' }} >
           <Logo />
           <Divider
             orientation="vertical"

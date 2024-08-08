@@ -427,6 +427,18 @@ export default function DosyaComponent() {
                                         <IconButton
                                             size="small"
                                             onClick={() => handleDownload(index)}
+                                            sx={{
+                                                "&:hover": {
+                                                    bgcolor: "transparent",
+                                                    color: "red",
+                                                    "& .MuiSvgIcon-root": {
+                                                        color: "darkred",
+                                                    },
+                                                },
+                                                "&:active": {
+                                                    transform: "scale(0.95)",
+                                                }
+                                            }}
                                         >
                                             <SaveAltIcon fontSize="small"/>
                                         </IconButton>

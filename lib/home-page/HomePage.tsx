@@ -9,9 +9,9 @@ import RehberBox from "../rehber/RehberBox";
 
 export default function HomePage() {
   return (
-    <div>
-      <News />
+    <Box>
       <RehberBox variant="home"/>
-    </div>
+      <News />
+    </Box>
   );
 }

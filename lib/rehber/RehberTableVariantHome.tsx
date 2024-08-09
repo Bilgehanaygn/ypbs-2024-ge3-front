@@ -179,7 +179,7 @@ const RehberTableVariantHome: React.FC<RehberTableProps> = ({ users }) => {
       return 'auto';
     };
     return(
-        <Box sx={{height:"500px"}}>
+        <Box sx={{height:"320px"}}>
             <DataGrid
             columnHeaderHeight={0}
                 rows={users}

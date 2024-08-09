@@ -24,7 +24,8 @@ const RehberHeader: React.FC<RehberHeaderProps> = ({ variant }) => {
             </Box>
             {variant === "home" && (
                 <Box>
-                    <IconButton sx={{ display: 'flex', 
+                    <IconButton onClick={routeToRehber}
+                        sx={{ display: 'flex', 
                         padding:"0px 0px 10px px",
                         width: '100%', 
                         "&:hover": {

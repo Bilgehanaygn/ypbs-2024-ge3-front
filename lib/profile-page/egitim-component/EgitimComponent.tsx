@@ -180,7 +180,7 @@ export default function EgitimComponent() {
                                 <TextField
                                     required
                                     error={!editData?.okulAdi}
-                                    helperText={!editData?.okulAdi ? "Required Field" : ""}
+                                    placeholder="Gerekli Alan"
                                     name="okulAdi"
                                     value={editData?.okulAdi}
                                     onChange={handleInputChange}
@@ -192,9 +192,12 @@ export default function EgitimComponent() {
                                             height: "20px",
                                         },
                                         "& .MuiInputBase-input": {
-                                            padding: "0px",
+                                            padding: "0px 0px 5px 0px",
                                             color: "black",
-                                            fontSize: "0.81rem"
+                                            fontSize: "0.81rem",
+                                            "&::placeholder": {
+                                                color: "red",
+                                            }
                                         }
                                     }}
                                 />
@@ -385,6 +388,7 @@ export default function EgitimComponent() {
                                             <IconButton
                                                 size="small"
                                                 onClick={handleSave}
+                                                disabled={!(editData.okulAdi && editData.egitimTuru && editData.aciklama && editData.bolum && editData.baslangicTarihi && editData.mezuniyetTarihi)}
                                                 sx={{
                                                     "&:hover": {
                                                         bgcolor: "transparent",

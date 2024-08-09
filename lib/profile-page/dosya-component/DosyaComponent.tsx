@@ -387,6 +387,7 @@ export default function DosyaComponent() {
                                         <IconButton
                                             size="small"
                                             onClick={handleSave}
+                                            disabled={!(editData.dosyaAdi && editData.dosyaTuru && editData.aciklama)}
                                             sx={{
                                                 "&:hover": {
                                                     bgcolor: "transparent",

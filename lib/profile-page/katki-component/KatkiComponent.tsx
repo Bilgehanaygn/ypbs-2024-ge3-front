@@ -1,36 +1,37 @@
-import {Box, Button, Card, Divider, Grid, IconButton, TextField, Typography} from "@mui/material";
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {DatePicker} from '@mui/x-date-pickers/DatePicker';
-import dayjs, {Dayjs} from 'dayjs';
+import {Box, Button, Card, Divider, Grid, IconButton, Input, InputAdornment, TextField, Typography} from "@mui/material";
+import CustomSelect from "@/lib/common-component/custom-select/CustomSelect";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import ContactsIcon from '@mui/icons-material/Contacts';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
+
 import React, {useEffect} from "react";
+import dayjs, {Dayjs} from 'dayjs';
 import axios from "axios";
-import CustomSelect from "@/lib/common-component/custom-select/CustomSelect";
 
 interface deneyimInterface {
     id?: number;
-    kurumAdi: string;
-    pozisyon: string;
-    calismaSekli: string;
-    baslamaTarihi: string;
-    bitisTarihi: string;
-    istenAyrilmaNedeni: string;
+    etkinlikTuru: string;
+    aciklama: string;
+    link: string;
+    ekAdi: string;
+    ekUzantisi?: string
+    yuklenmeTarihi: string;
 }
 
-export default function DeneyimComponent() {
-    const [deneyimsOfUser, setDeneyimsOfUser] = React.useState<deneyimInterface[]>([]);
+export default function KatkiComponent() {
+    const [katkiOfUser, setKatkiOfUser] = React.useState<deneyimInterface[]>([]);
     const [editIndex, setEditIndex] = React.useState<number | null>(null);
     const [editData, setEditData] = React.useState<deneyimInterface | null>(null);
+    const [file, setFile] = React.useState<File | null>(null);
+
 
     const fetchData = async () => {
-        const response = await axios.get<deneyimInterface[]>("api/deneyim");
-        setDeneyimsOfUser(response.data);
+        const response = await axios.get<deneyimInterface[]>("api/katki");
+        setKatkiOfUser(response.data);
     };
 
     useEffect(() => {
@@ -40,7 +41,7 @@ export default function DeneyimComponent() {
     async function handleDelete(index: number) {
 
         const sendData = async () => {
-            await axios.delete("api/deneyim/" + deneyimsOfUser[index].id);
+            await axios.delete("api/katki/" + katkiOfUser[index].id);
         };
 
         await sendData();
@@ -49,7 +50,9 @@ export default function DeneyimComponent() {
 
     function handleEdit(index: number) {
         setEditIndex(index);
-        setEditData(deneyimsOfUser[index]);
+        const selectedData = katkiOfUser[index];
+        setEditData({...selectedData, ekAdi: "", ekUzantisi: ""});
+        setFile(null);
     }
 
     function handleInputChange(e: { target: { name: string; value: string } }) {
@@ -74,31 +77,92 @@ export default function DeneyimComponent() {
     async function handleSave() {
         if (editIndex !== null && editData) {
 
+            const formData = new FormData();
+
+            formData.append("etkinlikTuru", editData.etkinlikTuru);
+            formData.append("aciklama", editData.aciklama);
+            formData.append("link", editData.link);
+            formData.append("ekAdi", editData.ekAdi + editData.ekUzantisi);
+            formData.append("ek", file);
+
+
+            // debugger
+
+
             if (editData.id) {
-                await axios.put<deneyimInterface>("api/deneyim/" + editData.id, editData);
+                const response = await axios.put("api/katki/upload/" + editData.id, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
             } else {
-                const response = await axios.post<deneyimInterface>("api/deneyim", editData);
+                const response = await axios.post("api/katki/upload", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
             }
             setEditIndex(null);
             setEditData(null);
-
+            setFile(null);
             fetchData();
         }
     }
 
     function handleAdd() {
-        const newDeneyim: deneyimInterface = {
-            kurumAdi: "",
-            pozisyon: "",
-            calismaSekli: "",
-            baslamaTarihi: "",
-            bitisTarihi: "",
-            istenAyrilmaNedeni: ""
+        const newKatki: deneyimInterface = {
+            etkinlikTuru: "",
+            aciklama: "",
+            link: "",
+            ekAdi: "",
+            ekUzantisi: "",
+            yuklenmeTarihi: "",
         };
 
-        setDeneyimsOfUser([newDeneyim, ...deneyimsOfUser]);
+        setKatkiOfUser([newKatki, ...katkiOfUser]);
+        setFile(null);
         setEditIndex(0);
-        setEditData(newDeneyim);
+        setEditData(newKatki);
+    }
+
+
+    function handleDownload(index: number) {
+        const fetchData = async () => {
+            const response = await axios.get("api/katki/download/" + katkiOfUser[index].id, {
+                responseType: 'blob',
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', katkiOfUser[index].ekAdi);
+            document.body.appendChild(link);
+            link.click();
+
+            link.parentNode?.removeChild(link);
+        }
+
+        fetchData();
+    }
+
+    function triggerFileInput() {
+        document.getElementById('fileInput')?.click();
+    }
+
+
+    function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+        if (event.target.files && event.target.files.length > 0) {
+            const selectedFile = event.target.files[0];
+            setFile(selectedFile);
+
+            const fileParts = selectedFile.name.split(".");
+            const extension = fileParts.pop();
+            const name = fileParts.join(".");
+
+            if (editData) {
+                setEditData({...editData, ekAdi: name, ekUzantisi: (extension ? ("." + extension) : "")});
+            }
+        }
     }
 
 
@@ -108,7 +172,7 @@ export default function DeneyimComponent() {
             <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box display="flex" alignItems="center" justifyContent="left" p={2}>
                     <ContactsIcon color="inherit" fontSize="small"/>
-                    <Typography variant="subtitle1" color="black" ml={1} fontSize="small">DENEYİM</Typography>
+                    <Typography variant="subtitle1" color="black" ml={1} fontSize="small">KATKI</Typography>
                 </Box>
                 <Button
                     size="small"
@@ -135,45 +199,41 @@ export default function DeneyimComponent() {
 
             <Grid container spacing={2} p={2} alignItems={"flex-end"} justifyContent="space-between">
                 <Grid item xs={12} sm={2}>
-                    <Typography variant="caption" color="black" fontSize="small" noWrap>Çalışma Şekli</Typography>
+                    <Typography variant="caption" color="black" fontSize="small" noWrap>Etkinlik Türü</Typography>
                 </Grid>
                 <Grid item xs={12} sm={2}>
-                    <Typography variant="caption" color="black" fontSize="small" noWrap>Çalıştığı Pozisyon</Typography>
+                    <Typography variant="caption" color="black" fontSize="small" noWrap>Açıklama</Typography>
                 </Grid>
                 <Grid item xs={12} sm={2}>
-                    <Typography variant="caption" color="black" fontSize="small" noWrap>Çalıştığı Kurum Adı</Typography>
+                    <Typography variant="caption" color="black" fontSize="small" noWrap>Ek</Typography>
                 </Grid>
                 <Grid item xs={12} sm={2}>
-                    <Typography variant="caption" color="black" fontSize="small" noWrap>İşe Başlama Tarihi</Typography>
+                    <Typography variant="caption" color="black" fontSize="small" noWrap>Link</Typography>
                 </Grid>
                 <Grid item xs={12} sm={2}>
-                    <Typography variant="caption" color="black" fontSize="small" noWrap>İşten Çıkış Tarihi</Typography>
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                    <Typography variant="caption" color="black" fontSize="small" noWrap>İşten Ayrılış
-                        Nedeni</Typography>
+                    <Typography variant="caption" color="black" fontSize="small" noWrap>Yüklenme Tarihi</Typography>
                 </Grid>
             </Grid>
 
             <Divider orientation="horizontal" flexItem style={{backgroundColor: "lightgrey"}}/>
 
-            {deneyimsOfUser.map((user, index) => (
+            {katkiOfUser.map((user, index) => (
                 <Grid container spacing={2} p={2} key={index} alignItems={"flex-end"} justifyContent="space-between">
                     <Grid item xs={12} sm={2}>
                         {editIndex === index ? (
                             <CustomSelect
-                                fetchEndpoint="api/deneyim/enum"
-                                selectedValue={editData?.calismaSekli || ""}
+                                fetchEndpoint="api/katki/enum"
+                                selectedValue={editData?.etkinlikTuru || ""}
                                 onChange={(e) => handleInputChange({
                                     target: {
-                                        name: 'calismaSekli',
+                                        name: 'etkinlikTuru',
                                         value: e.target.value
                                     }
                                 })}
                             />
                         ) : (
                             <Typography variant="body1" color="black" fontSize="small"
-                                        noWrap>{user.calismaSekli}</Typography>
+                                        noWrap>{user.etkinlikTuru}</Typography>
                         )}
                     </Grid>
 
@@ -181,10 +241,10 @@ export default function DeneyimComponent() {
                         {editIndex === index ? (
                             <TextField
                                 required
-                                error={!editData?.kurumAdi}
-                                placeholder={!editData?.kurumAdi ? "Required Field" : ""}
-                                name="kurumAdi"
-                                value={editData?.kurumAdi}
+                                error={!editData?.aciklama}
+                                placeholder={!editData?.aciklama ? "Required Field" : ""}
+                                name="aciklama"
+                                value={editData?.aciklama}
                                 onChange={handleInputChange}
                                 variant="standard"
                                 size="small"
@@ -205,143 +265,19 @@ export default function DeneyimComponent() {
                             />
                         ) : (
                             <Typography variant="body1" color="black" fontSize="small"
-                                        noWrap>{user.kurumAdi}</Typography>
+                                        noWrap>{user.aciklama}</Typography>
                         )}
                     </Grid>
 
-                    <Grid item xs={12} sm={2}>
+                    <Grid item xs={12} sm={2} width={"200px"}>
                         {editIndex === index ? (
-                            <TextField
-                                required
-                                error={!editData?.pozisyon}
-                                placeholder={!editData?.pozisyon ? "Required Field" : ""}
-                                name="pozisyon"
-                                value={editData?.pozisyon}
-                                onChange={handleInputChange}
-                                variant="standard"
-                                size="small"
-                                sx={{
-                                    maxWidth: "150px",
-                                    "& .MuiInputBase-root": {
-                                        height: "20px",
-                                    },
-                                    "& .MuiInputBase-input": {
-                                        padding: "0px 0px 5px 0px",
-                                        color: "black",
-                                        fontSize: "0.81rem",
-                                        "&::placeholder": {
-                                            color: "red",
-                                        }
-                                    }
-                                }}
-                            />
-                        ) : (
-                            <Typography variant="body1" color="black" fontSize="small"
-                                        noWrap>{user.pozisyon}</Typography>
-                        )}
-                    </Grid>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <Grid item xs={12} sm={2}>
-                            {editIndex === index ? (
-                                <DatePicker
-                                    value={editData?.baslamaTarihi ? dayjs(editData.baslamaTarihi) : null}
-                                    onChange={(newValue) => handleDateChange('baslamaTarihi', newValue)}
-
-                                    //Normally TextField etc all MUI materials have variant="standard" but mui x materials doesn't have it. Tried to match in visuals
-                                    sx={{
-                                        maxWidth: "150px",
-                                        '& .MuiInputBase-root': {
-                                            height: '20px',
-                                            fontSize: '0.81rem',
-                                            '& .MuiInputBase-input': {
-                                                padding: '0px',
-                                                color: 'black',
-                                                borderBottom: '1px solid black',
-                                                '&:hover': {
-                                                    borderBottom: '2px solid darkred',
-                                                },
-                                            },
-                                            '&:before, &:after': {
-                                                borderBottom: 'none',
-                                            },
-                                        },
-                                        '& .MuiOutlinedInput-root': {
-                                            '& fieldset': {
-                                                border: 'none',
-                                            },
-                                            '&:hover fieldset': {
-                                                border: 'none',
-                                            },
-                                            '&.Mui-focused fieldset': {
-                                                border: 'none',
-                                            },
-                                        },
-                                        '& .MuiSvgIcon-root': {
-                                            fontSize: '1rem',
-                                        },
-                                    }}
-                                />
-                            ) : (
-                                <Typography variant="body1" color="black" fontSize="small"
-                                            noWrap>{user.baslamaTarihi}</Typography>
-                            )}
-                        </Grid>
-
-                        <Grid item xs={12} sm={2}>
-                            {editIndex === index ? (
-                                <DatePicker
-                                    value={editData?.bitisTarihi ? dayjs(editData.bitisTarihi) : null}
-                                    onChange={(newValue) => handleDateChange('bitisTarihi', newValue)}
-                                    sx={{
-                                        maxWidth: "150px",
-                                        '& .MuiInputBase-root': {
-                                            height: '20px',
-                                            fontSize: '0.81rem',
-                                            '& .MuiInputBase-input': {
-                                                padding: '0px',
-                                                color: 'black',
-                                                borderBottom: '1px solid black',
-                                                '&:hover': {
-                                                    borderBottom: '2px solid darkred',
-                                                },
-                                            },
-                                            '&:before, &:after': {
-                                                borderBottom: 'none',
-                                            },
-                                        },
-                                        '& .MuiOutlinedInput-root': {
-                                            '& fieldset': {
-                                                border: 'none',
-                                            },
-                                            '&:hover fieldset': {
-                                                border: 'none',
-                                            },
-                                            '&.Mui-focused fieldset': {
-                                                border: 'none',
-                                            },
-                                        },
-                                        '& .MuiSvgIcon-root': {
-                                            fontSize: '1rem',
-                                        },
-                                    }}
-                                />
-                            ) : (
-                                <Typography variant="body1" color="black" fontSize="small"
-                                            noWrap>{user.bitisTarihi}</Typography>
-                            )}
-                        </Grid>
-                    </LocalizationProvider>
-
-                    <Grid item xs={12} sm={2}>
-                        <Box display="flex" alignItems="flex-end" justifyContent="space-between"
-                             sx={{padding: "0px 0px"}}>
-                            {editIndex === index ? (
+                            <Box display="flex" alignItems="flex-end" justifyContent="space-between">
                                 <TextField
                                     required
-                                    error={!editData?.istenAyrilmaNedeni}
-                                    placeholder={!editData?.istenAyrilmaNedeni ? "Required Field" : ""}
-                                    name="istenAyrilmaNedeni"
-                                    value={editData?.istenAyrilmaNedeni}
+                                    error={!editData?.ekAdi}
+                                    placeholder="Required Field"
+                                    name="ekAdi"
+                                    value={editData?.ekAdi || ""}
                                     onChange={handleInputChange}
                                     variant="standard"
                                     size="small"
@@ -359,10 +295,128 @@ export default function DeneyimComponent() {
                                             }
                                         }
                                     }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={triggerFileInput}
+                                                    sx={{
+                                                        padding: "0px 0px 5px 0px",
+                                                        "&:hover": {
+                                                            bgcolor: "transparent",
+                                                            color: "darkred",
+                                                            "& .MuiSvgIcon-root": {
+                                                                color: "#2e7d32",
+                                                            },
+                                                        },
+                                                        "&:active": {
+                                                            transform: "scale(0.95)",
+                                                        }
+                                                    }}
+                                                >
+                                                    <AttachFileIcon fontSize={"small"}/>
+                                                </IconButton>
+                                                <Input
+                                                    id="fileInput"
+                                                    type="file"
+                                                    onChange={handleFileChange}
+                                                    sx={{display: 'none'}}
+                                                />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </Box>
+                        ) : (
+                            <Typography variant="body1" color="black" fontSize="small"
+                                        noWrap>{user.ekAdi}</Typography>
+                        )}
+                    </Grid>
+
+
+
+                    <Grid item xs={12} sm={2}>
+                        {editIndex === index ? (
+                            <TextField
+                                required
+                                error={!editData?.link || !/^https?:\/\/[^\s$.?#].[^\s]*$/.test(editData.link)}
+                                helperText={(!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(editData.link) ? "Invalid URL format" : "")}
+                                placeholder="Required Field"
+                                name="link"
+                                type="url"
+                                value={editData?.link}
+                                onChange={handleInputChange}
+                                variant="standard"
+                                size="small"
+                                sx={{
+                                    maxWidth: "150px",
+                                    "& .MuiInputBase-root": {
+                                        height: "20px",
+                                    },
+                                    "& .MuiInputBase-input": {
+                                        padding: "0px 0px 5px 0px",
+                                        color: "black",
+                                        fontSize: "0.81rem",
+                                        "&::placeholder": {
+                                            color: "red",
+                                        }
+                                    }
+                                }}
+                            />
+                        ) : (
+                            <Typography
+                                variant="body1"
+                                color="black"
+                                fontSize="small"
+                                noWrap
+                                component="a"
+                                href={user.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                sx={{
+                                    textDecoration: 'none',
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    }
+                                }}
+                            >
+                                {user.link}
+                            </Typography>
+                        )}
+                    </Grid>
+
+
+                    <Grid item xs={12} sm={2}>
+                        <Box display="flex" alignItems="flex-end" justifyContent="space-between"
+                             sx={{padding: "0px 0px"}}>
+                            {editIndex === index ? (
+                                <TextField
+                                    value={dayjs().format('YYYY-MM-DD')}
+                                    variant="standard"
+                                    size="small"
+                                    sx={{
+                                        maxWidth: "150px",
+                                        "& .MuiInputBase-root": {
+                                            height: "20px",
+                                        },
+                                        "& .MuiInputBase-input": {
+                                            padding: "0px",
+                                            color: "black",
+                                            fontSize: "0.81rem",
+                                            "&::placeholder": {
+                                                color: "red",
+                                            }
+                                        }
+                                    }}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                 />
                             ) : (
-                                <Typography variant="body1" color="black"
-                                            fontSize="small" noWrap>{user.istenAyrilmaNedeni}</Typography>
+                                <Typography variant="body1" color="black" fontSize="small" noWrap>
+                                    {user.yuklenmeTarihi}
+                                </Typography>
                             )}
                             <Box display="flex" justifyItems={"flex-end"} alignItems={"flex-end"} gap={1}>
                                 {editIndex === index ? (
@@ -391,7 +445,7 @@ export default function DeneyimComponent() {
                                         <IconButton
                                             size="small"
                                             onClick={handleSave}
-                                            disabled={!(editData.kurumAdi && editData.calismaSekli && editData.pozisyon && editData.bitisTarihi && editData.istenAyrilmaNedeni && editData.baslamaTarihi)}
+                                            disabled={!(editData.ekAdi && editData.etkinlikTuru && editData.aciklama && editData.link)}
                                             sx={{
                                                 "&:hover": {
                                                     bgcolor: "transparent",

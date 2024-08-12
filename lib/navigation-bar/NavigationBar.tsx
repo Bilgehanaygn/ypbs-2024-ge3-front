@@ -22,6 +22,14 @@ export const NavigationBar = () => {
   const router = useRouter();
   const { data: userState, mutate } = useSWR("/api/user/userHeader");
 
+  const routeToHome = () => {
+    router.push('/'); 
+  };
+
+  const routeToRehber = () => {
+    router.push('/rehber'); 
+  };
+
   async function handleLogout() {
     try {
       const response = await axios.get("api/auth/logout");
@@ -41,7 +49,7 @@ export const NavigationBar = () => {
         backgroundColor: "white",
       }}>
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={2} onClick={routeToHome} sx={{ cursor: 'pointer' }} >
           <Logo />
           <Divider
             orientation="vertical"
@@ -63,7 +71,7 @@ export const NavigationBar = () => {
           <Button color="inherit" sx={{ fontSize: "0.75rem" }}>
             <Typography variant="caption">Genel</Typography>
           </Button>
-          <Button color="inherit" sx={{ fontSize: "0.75rem" }}>
+          <Button onClick={routeToRehber} color="inherit" sx={{ fontSize: "0.75rem" }}>
             <Typography variant="caption">Rehber</Typography>
           </Button>
           <Button color="inherit" sx={{ fontSize: "0.75rem" }}>

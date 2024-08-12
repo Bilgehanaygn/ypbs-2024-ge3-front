@@ -1,31 +1,45 @@
 "use client";
 
-import React from 'react';
-import ContactsIcon from '@mui/icons-material/Contacts';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import React, { useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Button, Card, IconButton, TextField, Typography } from '@mui/material';
-import AutocompleteSelectBox from './autocompleteSelectBox';
+import { Box, Button, TextField } from '@mui/material';
+import AutocompleteSelectBox from './AutocompleteSelectBox';
+import useSWR, { mutate } from 'swr';
+import axios from 'axios';
+import { GridRowsProp } from '@mui/x-data-grid';
 
 interface RehberSearchBarProps {
     variant: string;
-    nameSurname: string;
-    unvan: string;
-    gorev: string;
-    birim: string;
-    proje: string;
-    takim: string;
-    setNameSurname: (value: string) => void;
-    setUnvan: (value: string) => void;
-    setGorev: (value: string) => void;
-    setBirim: (value: string) => void;
-    setProje: (value: string) => void;
-    setTakim: (value: string) => void;
 }
 
-const RehberSearchBar: React.FC<RehberSearchBarProps> = ({ variant,
-    nameSurname, unvan, gorev, birim, proje, takim,
-    setNameSurname, setUnvan, setGorev, setBirim, setProje, setTakim}) => {
+const RehberSearchBar: React.FC<RehberSearchBarProps> = ({variant}) => {
+    const [nameSurname, setNameSurname] = useState<string>('');
+    const [unvan, setUnvan] = useState<string>('');
+    const [gorev, setGorev] = useState<string>('');
+    const [birim, setBirim] = useState<string>('');
+    const [proje, setProje] = useState<string>('');
+    const [takim, setTakim] = useState<string>('');
+    
+    
+    const { data: users } = useSWR("/api/user/findUsersWithFilters", async () => {
+        const response = await axios.get("/api/user/findUsersWithFilters", {
+          params: {
+            nameSurname,
+            birim,
+            unvan,
+            gorev,
+            proje,
+            takim,
+          },
+        });
+        return response.data;
+    },{ revalidateOnFocus: false });
+
+    useEffect(() => {
+        mutate("/api/user/findUsersWithFilters");
+    }, [nameSurname, unvan, gorev, birim, proje, takim]);
+
+   
     return (
         <Box>
         {variant==="rehber" && <Box sx={{

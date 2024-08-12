@@ -15,9 +15,10 @@ export function createComponents(config: TubitakPalette): Components {
         root: {
           borderRadius: 15,
           padding: 10,
+          borderBottom: '5px solid red', // Add a red border only at the bottom
           [`&.${paperClasses.elevation1}`]: {
             boxShadow:
-            "0px 5px 22px rgba(0, 0, 0, 0.15), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.05)",
+                "0px 5px 15px rgba(0, 0, 0, 0.1), 0px 3px 8px rgba(0, 0, 0, 0.08), 0px 0px 10px rgba(0, 0, 0, 0.04)",
           },
         },
       },

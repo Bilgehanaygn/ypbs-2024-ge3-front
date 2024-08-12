@@ -1,7 +1,6 @@
 "use client";
 
-import News from "@/lib/news/News";
-import { ThemeProvider } from "@mui/material/styles";
+import News from "@/lib/home-page/news/News";
 import { Box } from "@mui/material";
 import RehberBox from "../rehber/RehberBox";
 

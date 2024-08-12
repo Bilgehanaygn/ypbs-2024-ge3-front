@@ -3,12 +3,12 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { createTheme } from "@/lib/theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
-import { NavigationBar } from "../lib/navigation-bar/NavigationBar";
+import { NavigationBar } from "@/lib/common-component/navigation-bar/NavigationBar";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
-import LoadingPage from "@/lib/loading/LoadingPage";
+import LoadingComponent from "@/lib/common-component/loading-component/LoadingComponent";
 import useSWR from "swr";
-import { UserInterface } from "@/lib/user/user";
+import { UserInterface } from "@/lib/common/user/user";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,7 +38,7 @@ export default function RootLayout({
     return (
       <html lang="en">
         <body className={inter.className}>
-          <LoadingPage />
+          <LoadingComponent />
         </body>
       </html>
     );

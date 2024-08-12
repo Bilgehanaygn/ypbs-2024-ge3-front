@@ -67,7 +67,7 @@ const RehberSearchBar: React.FC<RehberSearchBarProps> = ({ variant,
             <AutocompleteSelectBox 
                 title={"Proje"}
                 setFunction={setProje}
-                link={'/api/proje/getNames'}
+                link={'/api/proje/getProjectNames'}
             />
     
             <AutocompleteSelectBox 
@@ -139,7 +139,7 @@ const RehberSearchBar: React.FC<RehberSearchBarProps> = ({ variant,
                 <AutocompleteSelectBox 
                     title={"Proje"}
                     setFunction={setProje}
-                    link={'/api/proje/getNames'}
+                    link={'/api/proje/getProjectNames'}
                 />
             </Box>
           

@@ -4,7 +4,7 @@ import React from "react";
 import { CircularProgress, Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-const LoadingPage = () => {
+const LoadingComponent = () => {
   const theme = useTheme();
 
   return (
@@ -31,4 +31,4 @@ const LoadingPage = () => {
   );
 };
 
-export default LoadingPage;
+export default LoadingComponent;

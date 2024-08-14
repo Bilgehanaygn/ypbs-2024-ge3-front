@@ -54,14 +54,12 @@ export default function BornThisMonthPage() {
   };
 
   return (
-      <ThemeProvider theme={theme}>
-        <Box>
-          <BornThisMonthCard
-              user={users.length > 0 ? users[currentPage] : null}
-              onPrevious={users.length > 0 ? handlePrevious : null}
-              onNext={users.length > 0 ? handleNext : null}
-          />
-        </Box>
-      </ThemeProvider>
+    <Box style={{ width: "100%", height: "100%" }}>
+      <BornThisMonthCard
+        user={users.length > 0 ? users[currentPage] : null}
+        onPrevious={users.length > 0 ? handlePrevious : null}
+        onNext={users.length > 0 ? handleNext : null}
+      />
+    </Box>
   );
 }

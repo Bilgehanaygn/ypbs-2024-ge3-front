@@ -19,28 +19,12 @@ function News() {
   return (
     <div
       style={{
-        width: 800,
-        height: 400,
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
         position: "relative",
       }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          background:
-            "linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0))",
-          padding: "10px",
-          zIndex: 50,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-        }}>
-        <NewspaperIcon
-          style={{ fontSize: "36px", color: "white", marginRight: "10px" }}
-        />
-        <h2 style={{ color: "white", margin: 0, fontSize: 25 }}>Haberler </h2>
-      </div>
+      <HaberlerHeader />
       <Carousel
         autoPlay={false}
         animation="slide"
@@ -48,21 +32,21 @@ function News() {
         navButtonsAlwaysInvisible={false}
         indicatorIconButtonProps={{
           style: {
-            padding: 4,
-            width: 3,
-            height: 3,
+            padding: "0.25vw",
+            width: 0,
+            height: 0,
             color: "black",
-            borderWidth: "3px",
+            borderWidth: "0.15vw",
             borderColor: "white",
             borderStyle: "solid",
             backgroundColor: "black",
-            margin: "4px",
+            margin: "0.25vw",
           },
         }}
         activeIndicatorIconButtonProps={{
           style: {
-            width: 16,
-            height: 16,
+            width: "0.75vw",
+            height: "0.75vw",
             color: "white",
             backgroundColor: "white",
           },
@@ -70,25 +54,29 @@ function News() {
         indicatorContainerProps={{
           style: {
             position: "relative",
-            bottom: "35px",
+            bottom: "2vh",
             zIndex: 1,
             display: "flex",
             justifyContent: "center",
+            margin: 0,
+            padding: 0,
           },
         }}
         navButtonsProps={{
           style: {
-            padding: "0px 0px",
+            padding: 0,
             opacity: 0.5,
           },
         }}
         navButtonsWrapperProps={{
           style: {
-            top: "47%",
+            top: "50%",
             transform: "translateY(-50%)",
             justifyContent: "space-between",
-            width: "50px",
+            width: "2.5vw",
             position: "absolute",
+            margin: 0,
+            padding: 0,
           },
         }}>
         {items.map((item, i) => (
@@ -103,8 +91,8 @@ function Item(props) {
   return (
     <Paper
       style={{
-        width: 800,
-        height: 400,
+        width: "100%",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -112,25 +100,58 @@ function Item(props) {
       }}>
       <img
         src={props.item.backgroundImage}
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "fill",
+        }}
         alt={props.item.header}
       />
       <div
         style={{
           zIndex: 1,
           position: "absolute",
-          bottom: 13,
+          bottom: 0,
           left: 0,
           right: 0,
-          background: "rgba(0, 0, 0, 0.3)",
+          background: "rgba(0, 0, 0, 0.6)",
           color: "white",
           textAlign: "center",
-          padding: "10px",
-          fontSize: "16px",
+          padding: "0.5vw",
+          fontSize: "1vw",
+          margin: 0,
         }}>
         <p style={{ margin: 0 }}>{props.item.content}</p>
       </div>
     </Paper>
+  );
+}
+
+function HaberlerHeader() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        background:
+          "linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0))",
+        padding: "0px",
+        zIndex: 50,
+        position: "absolute",
+        borderRadius: "5px 0px 0px 0px",
+        top: 0,
+        left: 0,
+        right: 0,
+      }}>
+      <NewspaperIcon
+        style={{
+          fontSize: "1.5vw",
+          color: "white",
+          marginLeft: "5px",
+        }}
+      />
+      <h2 style={{ color: "white", margin: 0, fontSize: "1.5vw" }}>Haberler</h2>
+    </div>
   );
 }
 

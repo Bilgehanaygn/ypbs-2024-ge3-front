@@ -23,11 +23,11 @@ export const NavigationBar = () => {
   const { data: userState, mutate } = useSWR("/api/user/userHeader");
 
   const routeToHome = () => {
-    router.push('/'); 
+    router.push('/');
   };
 
   const routeToRehber = () => {
-    router.push('/rehber'); 
+    router.push('/rehber');
   };
 
   async function handleLogout() {
@@ -82,7 +82,13 @@ export const NavigationBar = () => {
             flexItem
             style={{ backgroundColor: "gray" }}
           />
-          <UserComponent name={userState.name} surname={userState.surname} />
+            {userState && (
+                <UserComponent
+                    name={userState.name}
+                    surname={userState.surname}
+                    photo={userState.photo} // Pass the photo data to the UserComponent
+                />
+            )}
           <Divider
             orientation="vertical"
             flexItem

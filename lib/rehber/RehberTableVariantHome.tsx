@@ -6,12 +6,14 @@ import { Box, Avatar, IconButton, Typography } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import {useRouter} from "next/navigation";
 
 interface RehberTableProps {
     users: GridRowsProp
 }
 
 const RehberTableVariantHome: React.FC<RehberTableProps> = ({ users }) => {
+    const router = useRouter();
   const columns: GridColDef[] = [
       {
         field: 'avatar',
@@ -166,8 +168,8 @@ const RehberTableVariantHome: React.FC<RehberTableProps> = ({ users }) => {
                 },
                 "&:active": {
                     transform: "scale(0.95)",
-                }
-            }}>
+                },
+            }} onClick={() => router.push(`/profile/${params.row.id}`)}>
               <OpenInNewIcon />
             </IconButton>
           </div>

@@ -87,7 +87,7 @@ export const NavigationBar = () => {
                     name={userState.name}
                     surname={userState.surname}
                     photo={userState.photo} // Pass the photo data to the UserComponent
-                    onClick={() => router.push(`/profile/${userState.id}`)}
+                    onClick={() => router.push("/profile/")}
                 />
             )}
           <Divider

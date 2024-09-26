@@ -8,7 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import LoadingComponent from "@/lib/common-component/loading-component/LoadingComponent";
 import useSWR, { mutate } from "swr";
-import { UserInterface } from "@/lib/common/user/user";
+import { UserHeaderInterface } from "@/lib/common/user/user";
 import { useEffect, useLayoutEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -33,7 +33,7 @@ export default function RootLayout({
 
   useEffect(() => {
     const checkAuthentication = async () => {
-      const response = await axios.get<UserInterface>("/api/user/userHeader");
+      const response = await axios.get<UserHeaderInterface>("/api/user/userHeader");
       mutate("/api/user/userHeader", response.data);
       if (!response.data && pathName !== "/")
         router.push("/?navigateTo=" + pathName.slice(1));
@@ -42,7 +42,7 @@ export default function RootLayout({
   }, [pathName]);
 
   async function fetchUserData() {
-    const response = await axios.get<UserInterface>("/api/user/userHeader");
+    const response = await axios.get<UserHeaderInterface>("/api/user/userHeader");
     return response.data;
   }
 

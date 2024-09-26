@@ -1,9 +1,31 @@
 import {Box, Card, Grid, TextField, Typography} from "@mui/material";
 import ContactsIcon from "@mui/icons-material/Contacts";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import axios from "axios";
+import {KanGrubu, UserKisiselInterface} from "@/lib/common/user/user";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function KisiselComponent() {
+
+    const [user, setUser] = useState<UserKisiselInterface | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get<UserKisiselInterface>("/api/user/userKisisel");
+            setUser(response.data);
+        } catch (error) {
+            console.error("Error fetching user data", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     const disabledTheme = createTheme({
         components: {
             MuiTextField: {
@@ -26,6 +48,19 @@ export default function KisiselComponent() {
         }
     });
 
+    if (loading) {
+        // Show a loading state until user data is available
+        return (
+            <Typography variant="subtitle1" color="textSecondary">
+                Loading...
+            </Typography>
+        );
+    }
+
+    const getEnumValues = <T extends object>(enumObj: T): Array<T[keyof T]> => {
+        return Object.values(enumObj) as Array<T[keyof T]>;
+    };
+
     return (
         <Card>
             <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -47,6 +82,7 @@ export default function KisiselComponent() {
                         <ThemeProvider theme={disabledTheme}>
                             <TextField disabled
                                label="Ad"
+                               value={user.isim}
                                InputLabelProps={{
                                    shrink: true,
                                }}
@@ -56,24 +92,27 @@ export default function KisiselComponent() {
 
                         <ThemeProvider theme={disabledTheme}>
                             <TextField disabled
-                                label="T.C. Kimlik Numarası"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
+                                       label="T.C. Kimlik Numarası"
+                                       value={user.tcKimlikNo}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}
                             ></TextField>
                         </ThemeProvider>
 
                         <ThemeProvider theme={disabledTheme}>
                             <TextField disabled
-                                label="Akademik Unvan"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
+                                       label="Akademik Unvan"
+                                       value={user.akademikUnvan}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}
                             ></TextField>
                         </ThemeProvider>
 
                         <TextField
                             label="Doğum Tarihi"
+                            value={user.dogumTarihi}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -82,6 +121,7 @@ export default function KisiselComponent() {
 
                         <TextField
                             label="Telefon"
+                            value={user.telefon}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -89,6 +129,7 @@ export default function KisiselComponent() {
 
                         <TextField
                             label="Acil Durumda Ulaşılacak Kişi"
+                            value={user.acilDurumKisi}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -100,40 +141,50 @@ export default function KisiselComponent() {
                     <Grid lg={6}>
                         <ThemeProvider theme={disabledTheme}>
                             <TextField disabled
-                                label="Soyad"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
+                                       label="Soyad"
+                                       value={user.soyisim}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}
                             ></TextField>
                         </ThemeProvider>
 
                         <ThemeProvider theme={disabledTheme}>
                             <TextField disabled
-                                label="Cinsiyet"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
+                                       label="Cinsiyet"
+                                       value={user.cinsiyet}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}
                             ></TextField>
                         </ThemeProvider>
 
                         <ThemeProvider theme={disabledTheme}>
                             <TextField disabled
-                                label="E-posta"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
+                                       label="E-posta"
+                                       value={user.email}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}
                             ></TextField>
                         </ThemeProvider>
 
                         <TextField
                             label="Kan Grubu"
+                            value={user.kanGrubu}
+                            onChange={(e) => setUser({ ...user, kanGrubu: e.target.value as KanGrubu})}
                             InputLabelProps={{
                                 shrink: true,
-                            }}
-                        ></TextField>
+                            }}>
+                            {getEnumValues(KanGrubu).map((option) => (
+                                <MenuItem key={option} value={option}>
+                                    {option}
+                                </MenuItem>
+                            ))}</TextField>
 
                         <TextField
                             label="Araç Plakası"
+                            value={user.aracPlakasi}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -141,6 +192,7 @@ export default function KisiselComponent() {
 
                         <TextField
                             label="Acil Durumda Ulaşılacak Kişi Tel"
+                            value={user.acilDurumTelefon}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -150,10 +202,11 @@ export default function KisiselComponent() {
 
                     <Grid lg={12}>
                         <TextField fullWidth
-                               label="İkametgah Adresi"
-                               InputLabelProps={{
-                                   shrink: true,
-                               }}
+                                   label="İkametgah Adresi"
+                                   value={user.adres}
+                                   InputLabelProps={{
+                                       shrink: true,
+                                   }}
                         ></TextField>
                     </Grid>
 
